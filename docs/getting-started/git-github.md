@@ -23,7 +23,9 @@ I won't be going into a lot of detail on how to use git during class. That said,
 Share your handle by submitting the [Assignment in Canvas](https://canvas.cornell.edu/courses/49841/assignments/481298)
 
 ## Introduce yourself on the Course Blog
-Take a look at the [blog here](/blog).
+We're going to be using Github a bunch, and the best way to get familiar with the Git workflow, is to start using it! So for this exercise, you'll use Github to create a blog post using Markdown that will then get automatically deployed to the class website.
+
+* Take a look at the [blog here](/blog).
 * Click on the Link to Github at the top right of the page, and click the Fork button.
   * The Fork button will create a copy of this repository where you can make edits
   * In the next step, you'll add a file to your copy of the repository, and then contribute it back to the original repository. This is called a Pull Request.
