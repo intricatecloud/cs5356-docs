@@ -68,7 +68,7 @@ const config = {
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/intricatecloud/cs5356',
+            href: 'https://github.com/intricatecloud/cs5356-docs',
             label: 'GitHub',
             position: 'right',
           },
@@ -104,7 +104,7 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/intricatecloud/cs5356',
+                href: 'https://github.com/intricatecloud/cs5356-docs',
               },
             ],
           },
