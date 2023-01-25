@@ -21,3 +21,31 @@ I won't be going into a lot of detail on how to use git during class. That said,
 ## Share your Github handle
 
 Share your handle by submitting the [Assignment in Canvas](https://canvas.cornell.edu/courses/49841/assignments/481298)
+
+## Introduce yourself on the Course Blog
+We're going to be using Github a bunch, and the best way to get familiar with the Git workflow, is to start using it! So for this exercise, you'll use Github to create a blog post using Markdown that will then get automatically deployed to the class website.
+
+* Take a look at the [blog here](/blog).
+* Click on the Link to Github at the top right of the page, and click the Fork button.
+  * The Fork button will create a copy of this repository where you can make edits
+  * In the next step, you'll add a file to your copy of the repository, and then contribute it back to the original repository. This is called a Pull Request.
+  * Its a "Request to Pull changes" from your copy to mine.
+* Add a Markdown page to `blog/$date-$cornell_id.md` for example - `blog/2023-01-23-da335.md`
+* Copy/paste this template, and answer the questions in your blog post.
+```
+---
+title: About my-cornell-netid
+authors:
+  name: Your Name
+  title: Your Cornell Program
+tags: [intro]
+---
+
+- Name/Nickname:
+- Program you're in at Cornell:
+- Last TV show you binged, or a movie you watched:
+- Worst CS Topic:
+```
+* Create a Pull Request on intricatecloud/cs5356-docs (see this guide for [Creating a Pull Request from a Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork))
+* I'll merge them, and we can watch the page update automatically as each Pull Request get merged
+* Submit the link to your blog post on the updated class page on this [Canvas Assignment](https://canvas.cornell.edu/courses/49841/assignments/482305). Your URL will look something like `https://cs5356.intricatecloud.io/blog/2023/01/23/your-cornell-netid`
