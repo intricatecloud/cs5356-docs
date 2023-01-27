@@ -11,9 +11,9 @@ My preference is to sketch something out on paper or in a tool like Figma, and t
 
 ## Rows and Columns
 
-In this unit, we're going to be working through implementing a provided prototype. Take a look at [this prototype on Figma](https://www.figma.com/file/H85eC9Nup1D780yoHIzlBh/CS-5356-Prototype-%231?node-id=632571%3A639&t=BRyBAgk6xCn0zvKE-0), for example. 
+In this unit, we're going to be working through implementing a provided prototype. Take a look at [this prototype on Figma](https://www.figma.com/file/H85eC9Nup1D780yoHIzlBh/CS-5356-Prototype-%231?node-id=632571%3A639&t=BRyBAgk6xCn0zvKE-0), for example.
 
-The first step to take is to divide up the page into rows and columns. And the you divide each row into more rows and columns, until enough things are on the page.
+The first step to take is to divide up the page into rows and columns. And the you divide each row into more rows and columns, until enough things are on the page. The only catch - A column cannot contain 2 rows. A column can only exist in one row at a time.
 
 Let's start here...
 
@@ -38,30 +38,36 @@ With these two diagrams, you might start to see how to implement the HTML to mat
 
 ## Boxes & Words, Rows and Columns, Style
 
-Once I've broken down the image into Rows and Columns, I'm ready to start writing. I do this in 3 passes: 
+Once I've broken down the image into Rows and Columns, I'm ready to start writing. I do this in 3 passes:
 - Boxes & Words
 - Rows & Columns
 - Style
 
 ### 1. Boxes and Words
 
-Once you've done the Outline of your Rows and Columns, create the HTML to match it (no CSS). And you can use text as a placeholder till you get to it.
+Once you've done the Outline of your Rows and Columns, create the HTML to match it and ignore the CSS for now. You can use text as a placeholder for elements until you're finished with the general structure.
 
 Here's what that looks like in HTML:
 
 ```html
+<!-- Row 1 -->
 <div>
+  <!-- Column 1 -->
   <div>
+    <!-- Child #1 -->
     <div>
       Title
     </div>
+    <!-- Child #2 -->
     <div>
       Subtitle
     </div>
+    <!-- Child #3 -->
     <button>
       Button
     </button>
   </div>
+  <!-- Column 2 -->
   <div>
     <div>Image</div>
   </div>
@@ -96,10 +102,10 @@ Here's what that looks like
   </div>
 </div>
 ```
-- The outermost parent element became the row with `class="columns"`
+- The outermost parent element became the row with `class="columns"` (columns with an s - plural)
 - The 2 children became columns with `class="column"`
 
-I wish they would have used the word row instead of column, but :shrug:
+I wish they would have used the word row instead of `columns`, but :shrug:
 
 ### 3. Style
 
@@ -143,4 +149,4 @@ While this exercise is useful to show you the effects of the different CSS class
 
 One of them is a Hero image which lets you create small, medium, and large sections of the page without having to jump through too many hoops. Take a look at the examples on [this Layouts page on the Bulma docs](https://bulma.io/documentation/layout/hero/) and look at Hero.
 
-Now - your turn to practice in the next section. 
+Now - your turn to practice in the next section.
