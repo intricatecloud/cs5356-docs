@@ -5,6 +5,12 @@ sidebar_position: 2
 
 Now we're going to start talking about planning how to layout your page. A couple of extra minutes upfront can save you hours of headaches later on.
 
+By the end of this, you should be able to:
+- look at an image that you're trying to recreate, and split it up into rows and columns visually or as a Tree of elements.
+- take your tree of elements, and write it as HTML as elements
+- convert that HTML into rows and columns using Bulma CSS
+- style your elements using Bulma
+
 It is important to remember that writing HTML and deciding which elements go where are 2 separate tasks. You might try to do them at the same time, but it won't look right.
 
 My preference is to sketch something out on paper or in a tool like Figma, and then implement it according to my paper scribbles. This is usually faster than trying to write it and deciding where it should go.

@@ -5,13 +5,20 @@ sidebar_position: 1
 
 Static websites are typically created using a combination of HTML files, CSS for styling, and JavaScript for interactivity. This section contains a brief overview of HTML & CSS, and how we'll be using it in the course.
 
+The following assumes that you understand how to write basic HTML ([w3schools guide](https://www.w3schools.com/html/default.asp) is great if you're starting from 0).
+
+By the end of this, you should:
+- see how HTML is similar to a Tree data structure
+- see how to use `div`'s as building blocks for the page
+- see how to define a row or a column using HTML & Bulma
+
 ## HTML
 
 ### HTML is a Tree of Elements
 
 HTML & CSS represent an implementation of Trees - the data structure.
 
-You define elements, and an element can be either a parent or a child of another element. 
+You define elements, and an element can be either a parent or a child of another element.
 
 ```html
 <!-- body would be the parent element of all elements on a page -->
@@ -25,10 +32,10 @@ You define elements, and an element can be either a parent or a child of another
 Any styles applied to one element have Cascading effects on child elements
 
 ```html
-<!-- 
+<!--
   A 5px margin on the body means that everything
   inside of body starts with a 5px margin on the
-  left 
+  left
 -->
 <body style="margin-left: 5px">
   <div>
@@ -41,7 +48,7 @@ For example, every HTML page has a `<body>` tag that represents the top-level pa
 
 ### Block elements vs inline block elements
 
-The most basic HTML document is `<body></body>`. 
+The most basic HTML document is `<body></body>`.
 
 What happens if you add some text between the tags? What happens if you hit `Enter` to create a new line?
 
@@ -150,7 +157,7 @@ I found one of the easiest ways to get started with the web is to avoid having t
 Bulma provides a few things:
 - A grid system so you can lay things out on the page
 - A color theme (there's such a thing as a Bulma Teal color)
-- And lots of [documentation and examples](https://bulma.io/documentation/) to help you create the widgets you're looking for. 
+- And lots of [documentation and examples](https://bulma.io/documentation/) to help you create the widgets you're looking for.
 
 ### Grid System
 
@@ -189,5 +196,6 @@ If you're feeling particularly creative, you can make your own color palettes. T
 
 - [Semantic HTML](https://web.dev/learn/html/semantic-html/)
 - [Accessible HTML](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/HTML)
+- [W3 Schools HTML Tutorials](https://www.w3schools.com/html/default.asp) if you're starting from 0
 
 Alright - now to start using these concepts!
