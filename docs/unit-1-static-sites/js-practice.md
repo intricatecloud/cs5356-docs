@@ -14,7 +14,7 @@ So for this exercise, we'll try that using Javascript and its API for working wi
 
 1. Use this [Codepen template](https://codepen.io/intricatecloud/pen/RwBBYaP), or the snippet below if you want to do it in an editor.
 2. Read the prompts within the `<script>` section of the Codepen
-3. Using some of the resources below (and some googling), implement the prompts
+3. Using the [Vanilla JS cheat sheet](../resources/vanilla-js-cheatsheet.md) + some googling, implement the prompts
 
 ```html
 <html>
@@ -74,10 +74,14 @@ So for this exercise, we'll try that using Javascript and its API for working wi
 
 ## Exercise 2: Create some elements from external data
 
-Now, for a more real use case. Getting data from an external source is always more fun.
+Now, for a more real use case - getting data from an external source.
 
-For this exercise, you'll use the `fetch()` API to request data from a Dog Pictures API.
+For this exercise, you'll use the `fetch()` API to request data from NYC's Open Data
 
-1. Use this Codepen template
+1. Use this [Codepen template](https://codepen.io/intricatecloud/pen/gOjdmgP?editors=1010), or copy the snippet below
 2. Read the prompts within the `<script>` section of the Codepen
-3. Using the resources below, implement the prompts
+3. Using the [Vanilla JS cheat sheet](../resources/vanilla-js-cheatsheet.md) + some googling, implement the prompts
+
+Some helpful links
+- Using the [`fetch()` API](https://www.digitalocean.com/community/tutorials/how-to-use-the-javascript-fetch-api-to-get-data) by Digital Ocean
+- [Introduction to fetch()](https://web.dev/introduction-to-fetch/) by web.dev
