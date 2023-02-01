@@ -90,3 +90,20 @@ const headingElementWrapper = document.createElement('div')
 headingElementWrapper.innerHTML = `<h1>${headingText}</h1><p>${messageText}</p>`
 document.body.appendChild(headingElementWrapper)
 ```
+
+## Event Handlers
+Given this HTML:
+```html
+<button id="my-button">Click me!</button>
+```
+
+### Respond to a Click
+```js
+const button = document.querySelector('#my-button')
+button.addEventListener('click', () => {
+  console.log('You clicked the button!')
+})
+```
+
+
+
