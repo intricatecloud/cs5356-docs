@@ -37,8 +37,8 @@ The provided wireframes provide a rough idea of what the site could look like. Y
 
 1. This assignment will be submitted via Github Classroom, so we can leave feedback on your code and you can leave your code private.
 2. There are 2 parts to the Assignment Submission
-  a. Part 1 - the project code
-  b. Part 2 - the deployed website URL & screenshots of metrics & logs for your application.
+  a. Part 1 - the project code which will go through Github Classroom & Canvas.
+  b. Part 2 - the deployed website URL & screenshots of metrics & logs for your application. This will be submitted through Canvas.
 
-
-
+## Ready to get started?
+Accept the invite into the Github Classroom organization, and clone the template repository.
