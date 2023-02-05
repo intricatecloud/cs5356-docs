@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+title: Using GH Classroom
+---
 # Using Github Classroom
 
 We'll be using Github Classroom in order to review assignments this semester. This accomplishes 2 things:
@@ -11,7 +15,7 @@ We'll use it for these 3 steps in your assignment.
 
 ## 1. Starting the assignment
 
-When you accept the invite to a Github Classroom assignment, you'll be guided through a couple of steps.
+When you accept the invite to a Github Classroom assignment, you'll be guided through a couple of steps. The invite link will be in the Assignment in Canvas.
 
 When you click the link to accept the invite, make sure you use the same Github handle that you submitted for the class assignment. You'll also be prompted to select a student identifier - this will be your Cornell username.
 
