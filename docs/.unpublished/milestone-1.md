@@ -75,3 +75,5 @@ For your submission in Canvas, please submit:
 * a PDF containing the link to your pull request in Github Classroom.
 * Your public URL to your working website, something like https://your-project-id.firebaseapp.com
 * Screenshots of metrics and logs to answer the questions (at the bottom of the Technical Specs)
+
+https://classroom.github.com/a/qS2_Fmfr
