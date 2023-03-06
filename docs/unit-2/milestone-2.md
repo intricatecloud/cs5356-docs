@@ -1,6 +1,6 @@
 # Milestone 2
 
-For the milestone, you're working with a new client to put together a web application. Similar to the last milestone, we've been given a rough prototype in Figma as well as a list of User Stories that describe the functionality that the client wants to build.
+For the milestone, you're working with a new client to put together a prototype of a web application. Similar to the last milestone, we've been given a rough prototype in Figma as well as a list of User Stories that describe the functionality that the client wants to build.
 
 Below is the high level description of the project that the client wants to build.
 
@@ -36,74 +36,73 @@ The app will have 2 different kind of users, students and teachers. Each one wil
 * As a student, I can upvote or downvote a question
 * As an instructor, I can view questions (and upvotes) that students are asking for a particular class session
 * As an instructor, I can view who asked a particular question
-* As an instructor, I can dismiss a question
 * As an instructor, I can view my classes & class sessions
 * As an instructor, I can create a class session
 
+## Technical Details
+
+This project is meant to be a prototype, and an exercise in figuring out your data model first before worrying about what tools you want to use.
+
+* Users will only have usernames, no passwords. We'll store our user info in a cookie for the prototype.
+* All the data can be stored in memory, we don't need to persist it. If the server restarts, we lose the data and that's fine for the prototype.
 
 ## Part 1 (3 pts) - Update Wireframes
 
-The goal here is to identify what may be missing from the prototype, and help fill in the blanks. 
+The goal here is to identify what may be missing from the prototype, and help fill in the blanks.
 
 Review the link to the wireframe in Figma. Then create a copy of the wireframe to make edits (you'll need to create a free Figma account first).
 
 For every User Story, review the prototype and ask, "Do I have everything I need on the page in order to implement this feature?" If the answer is no, add the missing elements to your copy of the Figma wireframes.
 
-Hint: There are 6 user stories missing/incomplete from the wireframe.
+Hint: There are 6 things missing/incomplete from the wireframe.
 
 For your submission, include a viewable, shareable link to your copy of the wireframe in Figma.
 
-## Part 2 (5 pts) - Build the API
+## Part 2 (6 pts) - Build the API and connect the Frontend
 
 Now that we've filled in the blanks and have a better understanding of the scope of the project, we can get started building it out.
 
-For this Milestone, the focus of the project will be on the backend functionality. The majority of the HTML/CSS is provided for you, and it is your job to implement the data model to support the User Stories of the app.
+This Milestone is split into 2 projects: a frontend application and our backend API.
 
-Once you clone the repository for the Milestone 2 assignment, search for `CS5356-TODO` - this will show you all the spots around the code where you'll need to implement some functionality.
+For this Milestone, the focus of the project will be on the backend functionality. It is your job to implement our web API and our data model to support the application.
 
-For your submission, include the link to your Feedback Pull Request.
+The majority of the HTML/CSS is provided for you, all thats left to do is take some input from the user, and send it to our backend API to save it.
+
+Once you clone the repository for the Milestone 2 assignment, read the README.md first, and then search for `CS-5356-TODO` - this will show you all the spots around the code where you'll need to implement some functionality.
+
+For your submission, include the link to your Feedback Pull Request. You should be passing your Autograding Github Check.
 
 ## Part 3 (3 pts) - Hosting
 
-Once you've got your project working locally, it's time to get the prototype hosted using Firebase Hosting along with their Cloud Functions product. 
+Once you've got your project working locally, it's time to get the prototype hosted using Firebase Hosting along with their Cloud Functions product.
 
-Create a new Firebase project (don't reuse the same one you used for milestone 1), then follow this guide (TODO) to get your project set up for Firebase.
-
-All the metrics that we need to see about the website will be available in the Firebase Console, after you set up Cloud Logging. Follow the Firebase [guide to setting up Cloud Logging here](https://firebase.google.com/docs/hosting/web-request-logs-and-metrics)
+TODO Add Guide to adding Cloud Functions (Danny will update)
 
 Create some content on the site to generate some traffic (create classes, ask questions). We'll want screenshots to answer the following questions about your project
-   1. How many API calls are made to your application? Hint: Some of the requests to your app are for HTML pages, others are to send/receive data. 
-   3. What is the latency on the request to ask questions?
-   4. Which page takes the longest to load?
+   1. How many API calls are made to your application? Hint: Some of the requests to your app are for HTML pages, others are to send/receive data.
+   2. Create some traffic that results in a 401 Unauthorized Status Code, and then find it in logs
+   3. What is the latency on one of the requests to post a question?
 
 # Grading
 
 Here's the breakdown of points. See the rubric in Canvas for more details.
 
 * 3 pts - Update a wireframe to fill in missing details
-* 4 pts - Send data from the browser, save it, 
+* 6 pts - Send data from the browser, save it,
 and display that data back to the user
-* 2 pts - Host & deploy your code to Firebase Hosting
-* 1 pt - View and analyze website traffic & performance
+* 3 pts - Hosting, Deployment, and Analyzing website traffic & performance
 
 ## Submission
 This assignment will be submitted via Github Classroom & Canvas, so we can leave feedback on your code and you can leave your code private.
 
 For your submission to Github Classroom, submit the link to your `Feedback` Pull Request containing the code for your project.
 
-For your submission in Canvas, please submit:
+For your submission in Canvas, please submit a PDF with:
 
-* a PDF containing the link to your pull request in Github Classroom.
-* Your public URL to your working website, something like https://your-project-id.firebaseapp.com
-* Screenshots of metrics and logs to answer the questions (at the bottom of the Technical Specs)
+* a link to a shareable, publicly viewable link to your copy of the Figma Wireframes
+* a link to your Feedback pull request in Github Classroom.
+* Your public URL to your working website, something like https://your-project-id.web.app
+* Screenshots of metrics and logs to answer the questions
 
-TODO
-- get the link for github classroom
-
-
-
-
-
-
-
-
+# Accept the Github Classroom Assignment Link
+https://classroom.github.com/a/_X8nkAuB
