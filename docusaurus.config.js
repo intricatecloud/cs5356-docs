@@ -1,110 +1,111 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'CS 5356',
-  tagline: 'For 2023 CS 5356 Building Startup Systems',
-  url: 'https://cs5356.intricatecloud.io',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
-
+  title: "CS 5356",
+  tagline: "For 2023 CS 5356 Building Startup Systems",
+  url: "https://cs5356.intricatecloud.io",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/favicon.ico",
+  markdown: {
+    mermaid: true,
+  },
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
 
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          routeBasePath: '/',
+          sidebarPath: require.resolve("./sidebars.js"),
+          routeBasePath: "/",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/intricatecloud/cs5356-docs/tree/main/',
+          editUrl: "https://github.com/intricatecloud/cs5356-docs/tree/main/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/intricatecloud/cs5356-docs/tree/main/',
+          editUrl: "https://github.com/intricatecloud/cs5356-docs/tree/main/",
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       }),
     ],
   ],
 
+  themes: ["@docusaurus/theme-mermaid", "@docusaurus/theme-live-codeblock"],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'CS 5356',
+        title: "CS 5356",
         logo: {
-          alt: 'CS 5356 Logo',
-          src: 'img/logo.svg',
+          alt: "CS 5356 Logo",
+          src: "img/logo.svg",
         },
         items: [
           {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Course Docs',
+            type: "doc",
+            docId: "intro",
+            position: "left",
+            label: "Course Docs",
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          { to: "/blog", label: "Blog", position: "left" },
           {
-            href: 'https://github.com/intricatecloud/cs5356-docs',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/intricatecloud/cs5356-docs",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: 'Docs',
+            title: "Docs",
             items: [
               {
-                label: 'Course Docs',
-                to: '/',
+                label: "Course Docs",
+                to: "/",
               },
             ],
           },
           {
-            title: 'Community',
+            title: "Community",
             items: [
               {
-                label: 'Canvas',
-                href: 'https://canvas.cornell.edu/courses/49841',
+                label: "Canvas",
+                href: "https://canvas.cornell.edu/courses/49841",
               },
             ],
           },
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: "Blog",
+                to: "/blog",
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/intricatecloud/cs5356-docs',
+                label: "GitHub",
+                href: "https://github.com/intricatecloud/cs5356-docs",
               },
             ],
           },

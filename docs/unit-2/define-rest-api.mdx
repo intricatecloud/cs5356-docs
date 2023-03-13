@@ -1,0 +1,79 @@
+---
+sidebar_position: 7
+---
+
+# Define your REST API
+
+In this section, we're going to define the set of API Routes / Endpoints / URLs that we need to build for our application, based on the data model and the functions we put together in [Work with Data in Javascript](./js-and-data).
+
+We'll define our APIs using the REST design pattern
+
+## Resources
+
+We have 3 resources, `users`, `chatrooms`, and `messages`.
+
+We defined the following functions to work with our resources:
+* `createUser()`
+* `createChatroom()`
+* `joinChatroom()`
+* `viewMyChatrooms()`
+* `sendMessage()`
+
+We'll create an API Route for every function we have, following the REST Guidelines.
+
+## URLs
+
+### Create a user
+
+`POST /user`
+
+With expected body:
+```
+{ "name": "da335" }
+```
+
+### Create a Chatroom
+
+`POST /chatroom` - to create a chatroom with provided data
+
+
+With expected body:
+```
+{ "name": "2023-cs-5356-class" }
+```
+
+### Join Chatroom
+
+`PUT /chatroom/id` - to join a chatroom with a particular id. No body expected.
+
+### View My Chatrooms
+
+There are multiple ways you can do this one.
+
+Option 1) - `GET /chatrooms` - to get all chatrooms, already filtered down to your user.
+
+If you want to show available chatrooms for a user to join, this may be problematic.
+
+Option 2) - `GET /user/chatrooms` - get all the chatrooms that are specific to the current user
+
+`/chatrooms` is nested underneath `/user`. It becomes slightly more explicit that these are the chatrooms for a particular user. This allows us to still have `GET /chatrooms` URL to view available chatrooms.
+
+Option 3) `GET /chatrooms?filter=mine` - to get all chatrooms with a filter that we define
+
+This makes use of __query parameters__ - a set of `key=value` pairs, starting with `?` - used as a way of providing options to a particular URL.
+
+All 3 are perfectly valid, although some are more clear than others.
+
+### Send a Message
+
+Option 1) `POST /chatroom/id/message` - to create a message for a particular chatroom ID
+
+Option 2) `POST /message` - to create a message using the provided data
+
+
+With expected body:
+```
+{ "message": "hello!" }
+```
+
+Now that we have a set of URLs to work with our Data Model, we can start coding up our API server to match.

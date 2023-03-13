@@ -1,0 +1,136 @@
+---
+sidebar_position: 4
+---
+# Work with Data in Javascript
+
+In the last section, we put together a possible data structure to help us send and receive messages in a chat app. In this section, the goal is to write some JS that can work with that data.
+
+For all the examples below, we're going to implement code to create the example database below:
+
+```js
+const db = {
+  "users": [
+    {
+      "name": "da335"
+    }
+  ],
+  "chatrooms": [
+    {
+      "name": "2023-cs-5356-class",
+      "members": ["da335"],
+      "messages": [
+        {
+          "content": "hello world!",
+          "name": "da335",
+          "timestamp": "2023-02-01"
+        }
+      ]
+    }
+  ]
+}
+```
+
+We also have this function to help create a 6 digit random ID
+
+```js
+const generateRandomNumber = () => {
+  return Math.floor(100000 + Math.random() * 900000)
+}
+```
+
+## Working with Data in Arrays
+
+In order to work effectively with data in Javascript, you'll make use of these 3 most common array functions:
+* `users.find(user => user.name === 'danny')` - find an item in an array based on a condition
+* `chatrooms.filter(chatroom => chatroom.members.length > 0)` - return all items in an array that match a condition
+* `array.push({ name: 'danny' })` - add an item to an array
+
+## Create a User
+
+To create a user, we need to provide their name, and we can add an item to the `users` array
+
+```js
+const createUser = name => {
+  db.users.push({
+    name: name
+    // if you want to make an object unique, add an id
+    id: generateRandomNumber()
+  })
+}
+```
+
+## Create a Chatroom
+
+To create a chatroom, we need to provide a name, and we can add an item to the `chatrooms` array
+
+```js
+const createChatroom = name => {
+  db.chatrooms.push({
+    name: name,
+    members: [],
+    messages: []
+    id: generateRandomNumber()
+  })
+}
+```
+
+In this scenario, we provide a name as a parameter, but we add an empty `members` array and an empty `messages` array.
+
+## Join a Chatroom
+
+To join a chatroom, we need to provide the user name & the chatroom they want to join. We can then find the chatroom, and add them to the `members` array
+
+```js
+const joinChatroom = userName, chatroomName => {
+  const chatroom = chatrooms.find(chatroom => chatroom.name === chatroomName)
+  if (chatroom) {
+    chatroom.members.push(userName)
+  } else {
+    console.log('No chatroom found', chatroomName)
+  }
+}
+```
+
+## View Chatrooms that I'm In
+
+After you join a chatroom, you can view chatrooms that you are in by filtering chatrooms to those where your `userName` is included in the `members` array.
+
+```js
+const viewMyChatrooms = userName => {
+  return chatrooms.filter(chatroom => chatroom.members.includes(userName))
+}
+```
+
+## Send a message to a chatroom
+
+To send a message, we need to provide the chatroom name, the message for that chatroom, and the user who wrote it. We can then add a `mesage` to the `chatroom.messages` array.
+
+
+```js
+const sendMessage = (userName, chatroomName, message) => {
+  const chatroom = chatrooms.find(chatroom => chatroom.name === chatroomName)
+  if (chatroom) {
+    chatroom.messages.push({
+      content: message,
+      name: userName,
+      timestamp: Date.now()
+    })
+  } else {
+    console.log("No chatroom found", chatroomName)
+  }
+}
+```
+
+# Completed Example
+
+At this point, we have a working application. All the data is stored in-memory for now, but if and when you want to save the data in an external database, you can do so easily by replacing the same functions above with your preferred database API. In Milestone 3, we'll swap this out for Firebase Firestore.
+
+In the next section, we'll take this code and make it accessible over the internet!
+
+Below is a CodePen that shows the functions above, and what the end result of the data looks like
+
+<iframe height="300" style={{width: "100%"}} scrolling="no" title="Untitled" src="https://codepen.io/intricatecloud/embed/XWPZryb?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href="https://codepen.io/intricatecloud/pen/XWPZryb">
+  Untitled</a> by Danny (<a href="https://codepen.io/intricatecloud">@intricatecloud</a>)
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>

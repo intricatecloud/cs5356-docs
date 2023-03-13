@@ -1,0 +1,217 @@
+---
+sidebar_position: 9
+---
+
+# Developing your API
+
+In this section, we'll cover how you can create the API routes to support our example chatroom application. We'll create our API routes that we defined in the [earlier page](./define-rest-api)
+
+For each API route, I'll include some code for how to read the response using `fetch()`.
+
+## Notes
+
+* Everything below is usually an initial stage of developing your web API.
+* Because this is a prototype, there's plenty of things we can ignore now and address later, like security and other application constraints.
+
+## Create a User
+
+```js title="app.js"
+app.post('/user', (request, response) => {
+  const name = request.body.name
+
+  db.createUser(name)
+
+  response.status(201).send(name)
+})
+```
+
+Make a request
+
+```js
+fetch('/user', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({name: 'danny'})
+}).then(response => response.text())
+  .then(body => console.log(body))
+```
+
+## Create a Chatroom
+
+Note - this is copied from the previous section. Included for completeness.
+
+```js title="app.js"
+app.post('/chatroom', (request, response) => {
+  const name = request.body.name
+
+  db.createChatroom(name)
+
+  response.status(201).send(name)
+})
+```
+Make the request
+
+```js
+fetch('/chatroom', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({name: 'class-channel'})
+}).then(response => response.text())
+  .then(body => console.log(body))
+```
+
+
+## Join a Chatroom
+
+```js title="app.js"
+// highlight-next-line
+app.put('/chatroom/:name', (request, response) => {
+  // highlight-next-line
+  const chatroomName = request.params.name
+  const userName = request.body.userName
+
+  // highlight-next-line
+  const chatroom = db.getChatroom(chatroomName)
+  // highlight-next-line
+  if (!chatroom) {
+    // highlight-next-line
+    response.status(404).send('Chatroom not found')
+    // highlight-next-line
+    // return to prevent the rest of the code from running
+    // highlight-next-line
+    return
+    // highlight-next-line
+  }
+
+  db.joinChatroom(userName, chatroomName)
+
+  response.status(200).send()
+})
+```
+
+
+:::info
+
+* The `:` defines a route __parameter__ (__param__ for short)
+* `/chatroom/:name` creates a __param__ named `name`, and any text thats passed in there will be assigned to that param.
+* `/chatroom/class-channel` creates a `req.params.name` property, equal to `class-channel`
+* We can check if the chatroom exists by using a `getChatroom(chatroomName)` function.
+* We can set a `404` status code by calling `response.status(404).send()`
+
+:::
+
+Make a request
+
+```js
+// highlight-next-line
+fetch('/chatroom/class-channel', {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ userName: 'danny' })
+}).then(response => {
+  // highlight-next-line
+  if (response.statusCode === 200) {
+    // highlight-next-line
+    console.log('Joined chatroom')
+    // highlight-next-line
+    return
+    // highlight-next-line
+  } else {
+    // highlight-next-line
+    console.log('Received response: ', response.statusCode)
+    // highlight-next-line
+    return response.text().then(body => {
+      // highlight-next-line
+      console.log('Received body', body)
+      // highlight-next-line
+    })
+    // highlight-next-line
+  }
+})
+```
+
+
+:::info
+
+* When you're reading the response for a `fetch()` request, you can look at the `response.statusCode` property to see the status code for the request
+* In this case, if it doesn't respond with a 200, then we look at the request body for more information.
+
+:::
+
+
+## Send a Message
+
+```js title="app.js"
+app.post('/chatroom/:name/message', (request, response) => {
+  const chatroomName = request.params.name
+  const message = request.body.message
+  const userName = request.body.userName
+
+  // highlight-next-line
+  if (!message) {
+    // highlight-next-line
+    response.status(400).send('missing message')
+    // highlight-next-line
+    return
+    // highlight-next-line
+  } else if (!userName) {
+    // highlight-next-line
+    response.status(400).send('mising userName')
+    // highlight-next-line
+    return
+    // highlight-next-line
+  }
+
+  // highlight-next-line
+  const chatroom = db.getChatroom(chatroomName)
+  // highlight-next-line
+  if (!chatroom) {
+    // highlight-next-line
+    response.status(404).send('Chatroom not found')
+    // highlight-next-line
+    // return to prevent the rest of the code from running
+    // highlight-next-line
+    return
+    // highlight-next-line
+  }
+
+  db.sendMessage(userName, chatroomName, message)
+
+  response.status(201).send()
+})
+```
+
+:::info
+
+* If the `message` property was missing from the request body, we can send back a `400` Bad Request with an error message.
+* Likewise for the `userName` property
+* We can also validate that the chatroom exists before trying to create the message, and send back a `404` if the chatroom doesnt exist
+
+:::
+Make a request
+
+```js
+fetch('/chatroom/class-channel/message', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ userName: 'danny', message: 'hello!' })
+}).then(response => {
+  if (response.statusCode === 201) {
+    console.log('Sent message')
+    return
+  } else {
+    console.log('Received response: ', response.statusCode)
+    return response.text().then(body => {
+      console.log('Received body', body)
+    })
+  }
+})
+```

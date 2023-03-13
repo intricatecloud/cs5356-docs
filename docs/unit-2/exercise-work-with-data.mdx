@@ -1,0 +1,107 @@
+---
+sidebar_position: 5
+---
+
+# Exercise: Work with Data in JS
+
+For this exercise, write some Javascript code to generate the dataset that you put together in the [last exercise](./exercise-define-data-model.mdx)
+
+```json
+{
+  "classes": [{
+    "name": "cs5356"
+  }],
+  "classSessions": [{
+    "classId": "cs5356",
+    "questions": [{
+      "name": "danny",
+      "question": "why is the sky blue?",
+      "votes": 0
+    }]
+  }]
+}
+```
+
+Try defining the following functions:
+* `createClass(className)`
+* `createClassSession(className)`
+* `askQuestion(userName, question, classSession)`
+* `getClasses(userName)`
+* `getClassSession(sessionCode)`
+
+<details>
+<summary>
+View the example from class
+</summary>
+<p>
+
+```js
+let database = {
+  classes: [],
+  classSessions: [],
+};
+
+const getRandomNumber = () => {
+  return `${Math.floor(Math.random() * 900000) + 100000}`;
+};
+
+export const createClass = className => {
+  database.classes.push({
+    className: className,
+  });
+};
+
+export const getClasses = () => {
+  return database.classes;
+};
+
+export const createClassSession = className => {
+  // find the class with the class name
+  const classInfo = database.classes.find(classInfo => {
+    return classInfo.className === className;
+  });
+
+  database.classSessions.push({
+    className: className,
+    id: getRandomNumber(),
+    questions: [],
+  });
+};
+
+export const getClassSessions = className => {
+  // find the class with the class name
+  const classSession = database.classSessions.filter(classSession => {
+    return classSession.className === className;
+  });
+  return classSession;
+};
+
+export const askQuestion = (name, question, classSessionId) => {
+  const classSession = database.classSessions.find(
+    classSession => classSession.id === classSessionId
+  );
+  classSession.questions.push({
+    name: name,
+    question: question,
+    timestamp: Date.now(),
+  });
+};
+
+export const getQuestions = classSession => {
+  // find the question for a class session
+  return database.questions.filter(question => {
+    return question.classSession === classSession;
+  });
+};
+
+export const clear = () => {
+  database = {
+    classes: [],
+    classSessions: [],
+  };
+};
+```
+</p>
+</details>
+
+In the next section, we'll work on making these functions available over the internet.

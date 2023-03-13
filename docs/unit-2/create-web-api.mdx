@@ -1,0 +1,202 @@
+---
+sidebar_position: 8
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+# Create Web API Using Express
+
+For the JS ecosystem, there's a tool called express that takes care of working with the HTTP protocol, and making the useful parts of it available to our JS code. Below, we'll go through
+
+## Tools to work with APIs
+
+[Postman](https://postman.com) is a popular tool for working with Web API Requests. You don't need to sign up - download their desktop app and you can start making web requests.
+
+If you want to work with Javascript, you can do it with `fetch()` in a separate file and running `node test.js` for example.
+
+```js title="test.js"
+fetch("localhost:8000/")
+  .then(res => res.text())
+  .then(body => console.log(body));
+```
+
+If you like to use the terminal instead, you can work with Web API Requests using `curl -i`:
+
+```
+curl -i localhost:8000/
+```
+
+## Building your Express API Server
+
+We'll start with a Hello World example using Express. In this file, we're defining one __route__ named `/`, that will respond with `Hello world!. It listens for requests on port 8000;
+
+:::info
+
+If you're starting from scratch, you'll want to run:
+
+```bash
+mkdir api-server
+cd api-server
+npm init
+npm install --save express
+```
+
+:::
+
+```js title="app.js"
+import express from "express";
+
+const app = express();
+
+app.get("/", (request, response) => {
+  res.send("Hello world");
+});
+
+const port = 8000;
+app.listen(port, () => console.log(`App is running on port ${port}`));
+```
+
+You can run your server using `node app.js`
+
+If you load `localhost:8000`, you'll see `Hello world!`
+
+## Defining Routes
+
+The Express library provides you with a way of representing your Web APIs using Javascript code. The library follows a pattern:
+
+```js
+app.<verb>(path, (request, response) => {
+  // get something from the request
+  // then send back a response with a status-code
+  response.status(<status-code>)
+    .send(<body>)
+})
+```
+* You can define routes for specific HTTP Verbs and specific paths.
+* The `request` object contains all the details about the request [[docs](https://expressjs.com/en/api.html#req)]
+* The `response` object allows us to define status codes and send things in the body of the response
+
+### Example
+
+Let's define the Create a Chatroom API - based on the last section, we wanted:
+
+`POST /chatroom` - to create a chatroom with provided data
+
+
+With expected body:
+```
+{ "name": "2023-cs-5356-class" }
+```
+
+Here's how to do it with Express
+
+```js title="app.js"
+app.post('/chatroom', (request, response) => {
+  const name = request.body.name
+
+  db.createChatroom(name)
+
+  response.status(201).send(name)
+})
+```
+
+* Any JSON data that we send in the request body will appear in `request.body`.
+* We can call our code that creates the chatroom
+* We can send back a `201` status code when we successfully complete the request
+
+Let's try to use this endpoint.
+
+Send a request using one of the tools [above](#tools-to-work-with-apis), here's some example snippets below.
+
+<Tabs>
+<TabItem value="postman" label="Postman">
+
+```plaintext
+POST /chatroom
+
+Body: {"name": "class-channel"}
+```
+
+</TabItem>
+<TabItem value="js" label="Javascript">
+
+```js
+fetch('/chatroom', {
+  method: 'POST',
+  body: JSON.stringify({name: 'class-channel'})
+})
+```
+
+</TabItem>
+
+<TabItem value="curl" label="curl">
+
+```bash
+curl -i \
+  -XPOST \
+  -d '{ "name": "class-channel" }' \
+  http://localhost:8000/chatroom
+```
+
+</TabItem>
+</Tabs>
+
+If you ran this, you'd see a 500 Internal Server Error as the status code, and the response body contains some HTML with an error message `<pre>TypeError: Cannot read properties of undefined (reading &#39;name&#39;)<br>`.
+
+In this case, `request.body` appears to be undefined. It turns out you need to tell Express what to do with request bodies. To tell it how to read JSON requests, add the following to the top of your file:
+
+```js title="app.js"
+const app = express();
+// highlight-next-line
+app.use(express.json());
+...
+```
+
+For any request that contains a `Content-Type: application/json` header, `express.json()` [[docs](https://expressjs.com/en/api.html#express.json)] will attempt to read it as JSON and make it available as `request.body` without you writing additional code.
+
+Make the same request, and now include the `Content-Type: application/json` header.
+
+<Tabs>
+<TabItem value="postman" label="Postman">
+
+```plaintext
+POST /chatroom
+// highlight-next-line
+Content-Type: application/json
+
+Body: {"name": "class-channel"}
+```
+
+</TabItem>
+<TabItem value="js" label="Javascript">
+
+```js
+fetch('/chatroom', {
+  method: 'POST',
+  // highlight-next-line
+  headers: {
+    // highlight-next-line
+    'Content-Type': 'application/json'
+    // highlight-next-line
+  },
+  body: JSON.stringify({name: 'class-channel'})
+})
+```
+
+</TabItem>
+
+<TabItem value="curl" label="curl">
+
+```bash
+curl -i \
+  -XPOST \
+  # highlight-next-line
+  -H'Content-Type: application/json' \
+  -d '{ "name": "class-channel" }' \
+  http://localhost:8000/chatroom
+```
+
+</TabItem>
+</Tabs>

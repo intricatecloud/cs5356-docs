@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # Project Plans + Wireframes
 
 Before we get started writing code to support our application, we have to know what we're building first.
