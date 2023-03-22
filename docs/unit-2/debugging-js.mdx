@@ -9,7 +9,7 @@ While you're working on all this code, it's helpful to have as much detail as yo
 
 ## Fast Reloads with Nodemon
 
-`nodemon` is a tool that will monitor your node app, and restart the app if it detects any changes in your code.
+`nodemon` is a tool that will monitor your node app, and restart the app if it detects any changes in your code. This is already installed in your Milestone 2 project.
 
 ```
 npm install --save nodemon
@@ -24,64 +24,25 @@ nodemon app.js
 
 In the browser, you could use the Debugger from within Chrome Dev Tools and step through your code. You can replicate the same thing in VS Code, but it takes a couple of steps.
 
-### Using the UI
+:::info 
 
-1. Go to the Run and Debug tab on the left-side navigation.
-2. Don't click on the big blue button, and instead click on the link below that says "create a launch.json" file. This will create a .vscode/launch.json file in your workspace.
-3. Click on the Add Configuration blue button in the bottom right corner
-4. Select `Node.js: Launch via NPM`. This adds a new configuration to the `configurations` array in launch.json
-5. Update `runtimeArgs` to be one of your npm scripts like `[ 'run-scripts', 'test' ]` or `[ 'run-scripts', 'test-db' ]`
-6. Add a `debugger` statement somewhere in your code
-7. Click the Play button in the Run & Debug panel
-8. Run your code and watch it pause. From here you can view the current variable state
+Note: For Milestone 2, copy and paste this gist into your .vscode/launch.json file in your repository:
 
-### Using launch.json
+https://gist.github.com/intricatecloud/8bf533380f335544063b45ef366604c0
 
-::: info
-
-Note: If you want to debug your scripts from Milestone 2, copy and paste this gist into your .vscode/launch.json file in your repository:
-
-https://gist.github.com/intricatecloud/8d2727ff3c3af3b2fd08f82e4a052622
+* This assumes that you have VSCode open to your milestone-2 project directory. So you should see backend/ and frontend/ in the VSCode Side Bar
 
 :::
 
-Create a `.vscode/launch.json` file and include the snippets below:
-* Run `npm test` in debug mode
-* Run `npm start` in debug mode
+You can then click on the Run & Debug panel in the Side Bar, and then select any of the scripts in the dropdown, depending on which tests you want to debug. For example, click on `npm test-db` to run the database.spec.js tests while being able to set breakpoints in VSCode.
 
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      // highlight-next-line
-      "name": "npm test",
-      "request": "launch",
-      // highlight-next-line
-      "runtimeArgs": ["run-script", "test"],
-      "runtimeExecutable": "npm",
-      "skipFiles": ["<node_internals>/**"],
-      "type": "node"
-    },
-    {
-      // highlight-next-line
-      "name": "npm start",
-      "request": "launch",
-      // highlight-next-line
-      "runtimeArgs": ["run-script", "start"],
-      "runtimeExecutable": "npm",
-      "skipFiles": ["<node_internals>/**"],
-      "type": "node"
-    }
-  ]
-}
-```
-* The `name` property is the name you see in the Run & Debug panel.
-* The `runtimeArgs` refers to the command you want to run - anything that appears in package.json under the `scripts` property can be run this way.
+Select `npm start` if you want to run your server with the ability to set breakpoints as well.
 
 ## View Access Logs
 
 Similar to the Access Logs that we viewed from our web server for static websites, we can see similar traffic for our express server. We'll need to install a tool called `morgan` [[link to docs](https://expressjs.com/en/resources/middleware/morgan.html)]that can log this information to the console.
+
+*This is already installed as part of your Milestone 2 project.
 
 ```
 npm install --save morgan
