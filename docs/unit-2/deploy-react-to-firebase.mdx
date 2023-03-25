@@ -1,0 +1,176 @@
+---
+sidebar_position: 11
+---
+import AppMermaid from './_app-mermaid.mdx';
+
+# Deploy React to Firebase Hosting
+
+This guide assumes that you're working with the milestone-2 template, which has this folder structure:
+
+```
+|-- backend
+|   |-- package.json
+|   |-- ...
+|-- frontend
+|   |-- package.json
+|   |-- ...
+```
+
+This walkthrough follows along with [the Firebase docs](https://firebase.google.com/docs/hosting/functions) using an existing Express project. They have some info on setting up Firebase with Express, but there were a couple of extra steps to be aware of.
+
+## Architecture
+
+For this project, we're working with a separate frontend + backend application.
+
+Our frontend application is a React project, built with [create-react-app](https://create-react-app.dev/). This application runs in your browser, and would be hosted with Firebase Hosting.
+
+Our backend application is a Node project, built with [expressjs.com](https://expressjs.com/). This runs on a server, and would be hosted using Firebase Cloud Functions.
+
+:::info
+
+Using Firebase Cloud Functions __requires__ providing a credit card and upgrading to the Firebase Blaze plan.
+
+The Blaze plan still uses the free tier, and keeps a credit card on file for when you exceed the free tier usage.
+
+For the purposes of this class, the usage is incredibly small, and there's very little risk of incurring ANY charge.
+
+That said, mistakes happen and occasionally an infinite loop finds its way into our code. Firebase lets you set alerts when you spend more than $X that month. They also provide an emulator that we'll be using in this guide.
+
+:::
+
+When we host it, it'll work something like this
+
+<AppMermaid />
+
+* The user can visit `/`, `/instructor-home`, `/login`, and `/logout` pages
+* Any requests to `/api` would be sent to our backend
+
+
+## Install Firebase
+
+Since we have 2 projects in one repository, we could setup Firebase once, and tweak it work with both projects.
+
+* Make sure you are using Node v16+
+* The default installation process will create a firebase.json and extra files that you won't be needing for this process. We'll be tweaking all the defaults anyway.
+
+__Step 1:__ Starting from the root of your repository, run `npm install -g firebase-tools` which will install the firebase CLI.
+
+You can then run `npx firebase --help` to make sure your installation is working. `npx` is a shorthand for “npm execute” where it will download and install a package and let you run it from the command line. [See here for more info](https://www.freecodecamp.org/news/npm-vs-npx-whats-the-difference/).
+
+__Step 2:__ Go to the [Firebase Console](https://console.firebase.google.com/u/0/), and create a new project vi. __Don't__ reuse your Milestone 1 project.
+
+
+## Frontend: Firebase Hosting
+
+### Create a Build
+
+Our React application has two very convenient features.
+* It has a development mode that you've been using with `npm start`
+* It has a build mode that we can use to create a "build" - a folder filled with HTML, CSS, and JS that's managed by our React application.
+
+Create a build:
+```console
+cd frontend/
+npm build
+```
+
+You'll see something like:
+```
+> frontend@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+```
+
+At the end of this process, you can take a look at the `build/` folder. It will contain all the HTML, CSS, and JS that your application needs to run, including any libraries that you use with the `import` statement!
+
+### Setup Firebase Hosting
+
+`npx firebase init hosting` and follow the prompts.
+
+* Use the existing project you made in the earlier step.
+* For your public directory, use `frontend/build`
+* Configure it as a Single Page App
+* Don't set up automatic builds & deploys with Github yet. This can be setup later.
+* Don't overwrite any files.
+
+You'll now see new files:
+
+```plain
+|-- backend
+|   |-- package.json
+|   |-- ...
+|-- frontend
+|   |-- package.json
+|   |-- ...
+// highlight-start
+|-- node_modules
+|-- .firebaserc
+|-- firebase.json
+// highlight-end
+```
+.firebaserc should show the Firebase Project ID you selected during setup.
+
+firebase.json should look like:
+```json
+{
+  "hosting": {
+    // highlight-next-line
+    "public": "frontend/build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    // highlight-start
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+    // highlight-end
+  }
+}
+```
+
+* The `hosting.public` property should be pointing to your `frontend/build` folder.
+* The `hosting.rewrites` property should be set to take all paths, `"source": "**"` and redirect them to `/index.html`. This is required for React applications (using Routing) to work correctly.
+
+### Using the Emulator
+
+The Emulator is useful to double check if your Firebase configuration would work when you ACTUALLY deploy to Firebase. It's also a way to use some of their products in a test environment where you won't accidentally incur a bill.
+
+`npx firebase emulators:start` Run the local emulator so you can check that the Hello World HTML page is being served by Firebase Hosting.
+
+The output should tell you the URL you can use to view your site locally - by default, its localhost:5000. It still won't be functional yet until we do the backend.
+
+You’ll see this if everything is set up correctly.
+
+```console
+☁  milestone-2-da335 [main]: npx firebase emulators:start
+i  emulators: Starting emulators: hosting
+i  hosting[dperez-m2]: Serving hosting files from: frontend/build
+✔  hosting[dperez-m2]: Local server: http://127.0.0.1:5000
+⚠  emulators: The Emulator UI is not starting, either because none of the emulated products have an interaction layer in Emulator UI or it cannot determine the Project ID. Pass the --project flag to specify a project.
+
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+└─────────────────────────────────────────────────────────────┘
+
+┌──────────┬────────────────┐
+│ Emulator │ Host:Port      │
+├──────────┼────────────────┤
+│ Hosting  │ 127.0.0.1:5000 │
+└──────────┴────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500
+```
+
+We're at a good spot to deploy our code, even if the backend isn't hooked up yet.
+
+Run from the root of your workspace:
+```
+npx firebase deploy --only hosting
+```
+This will take all the code in your `frontend/build` folder, and deploy it to Firebase. If you visit your Hosting URL, you should see the deployed, but a bunch of errors in the console.
