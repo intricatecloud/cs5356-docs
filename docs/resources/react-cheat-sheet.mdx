@@ -47,3 +47,35 @@ const MyComponent = () => {
     </div>
 }
 ```
+
+## Work with arrays
+
+```js
+const colors = [{name: 'red'}, {name: 'green'}]
+
+const MyComponent = () => {
+
+    return <div>
+        { colors.map (color => {
+            return <div>{color.name}</div>
+          })
+        }
+    </div>
+}
+```
+This makes use of `Array.map` which says - create a new array and for every item in the array, return a different item instead - based on the provided item.
+
+This is the same thing as writing:
+
+```js
+const colors = [{name: 'red'}, {name: 'green'}]
+const divElements = []
+
+for(let i = 0; i < colors.length; i++) {
+    divElements.push(<div>{color.name}</div>)
+}
+
+const MyComponent = () => {
+    return <div>{divElements}</div>
+}
+```

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 12
+sidebar_position: 14
 ---
 import AppMermaid from './_app-mermaid.mdx';
 
@@ -58,7 +58,7 @@ __Step 1:__ Starting from the root of your repository, run `npm install -g fireb
 
 You can then run `npx firebase --help` to make sure your installation is working. `npx` is a shorthand for “npm execute” where it will download and install a package and let you run it from the command line. [See here for more info](https://www.freecodecamp.org/news/npm-vs-npx-whats-the-difference/).
 
-__Step 2:__ Go to the [Firebase Console](https://console.firebase.google.com/u/0/), and create a new project vi. __Don't__ reuse your Milestone 1 project.
+__Step 2:__ Go to the [Firebase Console](https://console.firebase.google.com/u/0/), and create a new project via the Web Console. __Don't__ reuse your Milestone 1 project.
 
 
 ## Frontend: Firebase Hosting
@@ -87,7 +87,7 @@ At the end of this process, you can take a look at the `build/` folder. It will 
 
 ### Setup Firebase Hosting
 
-`npx firebase init hosting` and follow the prompts.
+From the root of the workspace, run `npx firebase init hosting` and follow the prompts.
 
 * Use the existing project you made in the earlier step.
 * For your public directory, use `frontend/build`
@@ -175,3 +175,5 @@ Run from the root of your workspace:
 npx firebase deploy --only hosting
 ```
 This will take all the code in your `frontend/build` folder, and deploy it to Firebase. If you visit your Hosting URL, you should see the deployed, but a bunch of errors in the console.
+
+Now, proceed to the next section to deploy your Express app.

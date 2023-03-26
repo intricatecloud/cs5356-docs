@@ -109,6 +109,14 @@ fetch('http://localhost:8000/dashboard', {
 * It creates a cookie named `session` and it __encrypts/decrypts__ any data that you add to it.
 * You can then read/write that cookie from any Express Route
 
+:::caution
+
+This pattern described ONLY works if your frontend and your backend are available under the same domain. Otherwise, they can't share cookies.
+
+If you have a frontend running on `localhost:8000` and a backend running on `localhost:5000`, your backend would not be able to set a cookie because the request is coming from a different domain. This is enforced by the browser.
+
+:::
+
 ### What is a Session?
 
 It's helpful to define the word "session". A session is the period of time that we want to track - most commonly for logged-in user sessions. Here's an example for Milestone 2.
