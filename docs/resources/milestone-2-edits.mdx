@@ -1,0 +1,81 @@
+# Milestone 2 FAQs and Edits
+
+This is a collection of issues and workarounds that students have found when working with the existing milestone-2 template.
+
+## What about the dismiss feature?
+
+This was included as part of the wireframes, but was not part of the API and the data structure that we created. So you don't need to worry about dismissing as part of the assignment.
+
+## fetch('/api/user') returns 404
+
+We should be able to use /api paths with React because it is configured to proxy over your Express server, assuming that it is running on `http://localhost:8080`. [See more info about that here](../unit-2/frontend/developing-the-frontend#proxy-api)
+
+Double check:
+* frontend/package.json - should contain a proxy property `"proxy": "http://localhost:8080",`
+* your backend is actively running. You should be running the frontend in one terminal session, and the backend in another terminal session.
+
+If all that is true, you can try downgrading react-scripts. Edit package.json to change react-scripts to version `4.0.3`
+
+```json title=backend/package.json
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    ...
+    // highlight-next-line
+    "react-scripts": "4.0.3",
+    "web-vitals": "^2.1.4"
+  },
+```
+
+## error: digital envelope routines::unsupported
+
+Edit package.json to modify the start command, from [Stack Overflow](https://stackoverflow.com/a/69713899)
+
+```json title=backend/package.json
+"scripts": {
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    ...
+}
+```
+
+## nodemon: command not found
+
+* Make sure you ran `npm install` from the backend/ folder
+* Delete your node_modules folder: `rm -rf backend/node_modules/` (on linux)
+* The `nodemon` executable should be present in `node_modules/.bin/nodemon`
+
+## Windows Users
+
+### NODE_ENV is not recognized....
+
+```
+"NODE_ENV" is not recognized as an internal or external command, operable command or batch file.
+```
+
+This happens because in package.json, there are scripts that use the `NODE_ENV` environment variable. The scripts assume that they are running in a Linux/MacOS environment, and that same syntax doesn't work on windows.
+
+2 possible solutions:
+* use win-node-env, [see StackOverflow answer here](https://stackoverflow.com/a/40967643)
+* use cross-env
+
+If using cross-env, make the following updates:
+* from the backend/ folder, run: `npm install --save cross-env`
+* edit package.json to use `cross-env` before the NODE_ENV statement
+
+```json title=backend/package.json
+"scripts": {
+    "start": "nodemon index.js",
+    // highlight-start
+    "test": "cross-env NODE_ENV=test jasmine --reporter=jasmine-console-reporter",
+    "test-db": "cross-env NODE_ENV=test jasmine --reporter=jasmine-console-reporter spec/database.spec.js",
+    "test-login": "cross-env NODE_ENV=test jasmine --reporter=jasmine-console-reporter spec/login.spec.js",
+    "test-classes": "cross-env NODE_ENV=test jasmine --reporter=jasmine-console-reporter spec/class-endpoints.spec.js",
+    "test-session-codes": "cross-env NODE_ENV=test jasmine --reporter=jasmine-console-reporter spec/class-session-code-endpoints.spec.js",
+    "test-class-sessions": "cross-env NODE_ENV=test jasmine --reporter=jasmine-console-reporter spec/class-session-endpoints.spec.js",
+    // highlight-end
+    "lint-report": "eslint --output-file eslint-report.json --format json src/",
+    "lint-terminal": "eslint src/",
+    "lint": "npm run lint-report; npm run lint-terminal;"
+  },
+```
