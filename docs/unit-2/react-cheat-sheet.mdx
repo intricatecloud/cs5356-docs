@@ -1,0 +1,49 @@
+# React Cheat Sheet
+
+## Run when component first loads
+
+Use `useEffect(() => ...)` to accomplish this. ([useEffect docs](https://react.dev/reference/react/useEffect#fetching-data-with-effects))
+
+```jsx
+import React, { useEffect } from 'react'
+
+const MyComponent = () => {
+    useEffect(() => {
+        console.log('This ran once!')
+
+    }, []) // <--- This empty array here is important!
+    ...
+}
+```
+
+## Set onClick Handlers
+
+For `<button>` and `<a>` elements, you can use the `onClick` prop to pass a function with your click handler.
+
+```jsx
+const MyComponent = () => {
+    const onButtonClicked = () => {
+        console.log('Clicked!')
+    }
+    return <button onClick={onButtonClicked}>Click me</button>
+}
+```
+
+## Using `<form>`
+
+```jsx
+const MyComponent = () => {
+    const onSubmit = (event) => {
+        event.preventDefault()
+
+        console.log(event.target.myData.value)
+    }
+
+    return <div>
+        <form onSubmit={onSubmit}>
+            <input name="myData" type="text" />
+            <input type="submit">
+        </form>
+    </div>
+}
+```
