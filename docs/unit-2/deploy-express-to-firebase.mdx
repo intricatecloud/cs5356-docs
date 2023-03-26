@@ -137,6 +137,22 @@ The first time, this may take a few minutes as it copies your code and distribut
 
 If you see your page with the provided URL from Firebase - you’re set! You can submit that URL for your Milestone 2 assignment. You should check that your application continues to work, but the next issue you’ll find is related to cookies.
 
+### Possible 403 Error: Forbidden
+
+You may see a 403 error as a response for any of your /api routes. If you don't see a 403, skip this section.
+
+`Your client does not have permission to get URL /api/user from this server`
+
+I ran into this error the first time, but not the second time. Just in case you wind up seeing it...
+* Go to the Google Cloud Console and visit your Functions dashboard - https://console.cloud.google.com/functions/list
+* Make sure you're logged in with the right account, and select the project name in the Top Left of the dashboard.
+* Click on your `api` function
+* Select the Permissions tab
+* Check that there is a a Principal named `allUsers` with role `Cloud Functions Invoker. If its not there, that may be the result of the error.
+* If its not there, click Grant Access, and type `allUsers` into "New principals" text box. Select the Cloud Functions Invoker role and click Save.
+
+![The Cloud Functions dashboard with arrows pointing key areas](firebase-allUsers-change.png)
+
 ## Get cookies working
 
 Because of the features that Firebase provides for you, there are some limitations with what you can do with Cloud Functions - in particular, cookies. [More info here](https://firebase.google.com/docs/hosting/manage-cache#using_cookies)
