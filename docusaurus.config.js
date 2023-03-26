@@ -11,7 +11,7 @@ const config = {
   url: "https://cs5356.intricatecloud.io",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
   markdown: {
     mermaid: true,

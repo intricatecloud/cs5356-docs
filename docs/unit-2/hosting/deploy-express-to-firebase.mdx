@@ -86,8 +86,16 @@ Those extra steps:
 
 :::
 
-__Step 2:__ Update your backend/package.json to set the `main` property to the file that integrates with Firebase, named `backend/index-firebase.js`. This is already set up for you, and is all thats needed to prep your codebase for Firebase Cloud Functions.
+__Step 2:__ Create the main JS file to use with Firebase, and name it `backend/index-firebase.js`
 
+```js title=backend/index-firebase.js
+import functions from "firebase-functions";
+import expressApp from "./src/app.js";
+
+export const api = functions.https.onRequest(expressApp);
+```
+
+Then update your backend/package.json to set the `main` property to this new file `backend/index-firebase.js`.
 
 ```json title=backend/package.json
 {

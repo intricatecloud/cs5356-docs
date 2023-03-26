@@ -37,13 +37,12 @@ __Screenshot of one of the pages__
 * As a student, I can upvote or downvote a question
 * As an instructor, I can view questions (and upvotes) that students are asking for a particular class session
 * As an instructor, I can view who asked a particular question
-* As an instructor, I can dismiss a question
 * As an instructor, I can view my classes & class sessions
 * As an instructor, I can create a class session
-
+* ~~As an instructor, I can dismiss a question~~ This is no longer required for Milestone 2.
 
 ## Questions to keep in mind
 
-1. What use cases are missing from the wireframe? Hint: There are 6 user stories missing/incomplete from the wireframe.
+1. What use cases are missing from the wireframe? Hint: There are 5 user stories missing/incomplete from the wireframe.
 2. What data will I need to support that feature?
 3. How many separate pages will we need in our app?
