@@ -5,6 +5,14 @@ import AppMermaid from './_app-mermaid.mdx';
 
 # Deploy Express to Firebase Cloud Functions
 
+:::danger
+
+For Milestone 2, you need to use a Firebase account that is NOT linked to your @cornell.edu account. Create a new Firebase account linked to another email.
+
+There are Cornell security restrictions in Google Cloud that prevent @cornell.edu accounts from creating public Cloud Functions. So the solution is to use any other email for your Firebase account.
+
+:::
+
 This guide assumes that you're working with the milestone-2 template, which has this folder structure:
 
 ```
@@ -150,6 +158,16 @@ If you see your page with the provided URL from Firebase - you’re set! You can
 You may see a 403 error as a response for any of your /api routes. If you don't see a 403, skip this section.
 
 `Your client does not have permission to get URL /api/user from this server`
+
+:::danger
+
+For Milestone 2, you need to use a Firebase account that is NOT linked to your @cornell.edu account. Create a new Firebase account linked to another email.
+
+There are Cornell security restrictions in Google Cloud that prevent @cornell.edu accounts from creating public Cloud Functions. So the solution is to use any other email for your Firebase account.
+
+:::
+
+If you see this error, and you double-checked that you are using a separate account with Firebase (not @cornell.edu):
 
 I ran into this error the first time, but not the second time. Just in case you wind up seeing it...
 * Go to the Google Cloud Console and visit your Functions dashboard - https://console.cloud.google.com/functions/list
