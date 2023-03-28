@@ -84,12 +84,14 @@ If all that is true, you can try downgrading react-scripts. Edit package.json to
 
 ## frontend: error: digital envelope routines::unsupported
 
-Edit package.json to modify the start command, from [Stack Overflow](https://stackoverflow.com/a/69713899)
+Edit package.json to modify the start command, from [Stack Overflow](https://stackoverflow.com/a/69713899).
+
+Edit BOTH the `start` and `build` script.
 
 ```json title=backend/package.json
 "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     ...
 }
