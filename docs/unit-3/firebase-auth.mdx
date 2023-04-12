@@ -103,7 +103,7 @@ import firebase from 'firebase/compat/app'
 firebase.initializeApp(config)
 ```
 
-The code we're using for this guide is their v8 SDK.
+The code we're using for this guide is their v8 SDK. See the [Firebase SDK Reference here](https://firebase.google.com/docs/reference/js/v8)
 
 :::
 
@@ -194,11 +194,15 @@ if (!isSignedIn) {
 return (
   <div>
     <h1>My App</h1>
-    <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
-    <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
+    <p>Welcome - You are now signed-in - {isSignedIn}!</p>
   </div>
 );
 ```
+
+* Display the user's name & email address
+* Add a button to sign the user out
+
+Hint: See the [Firebase SDK Reference](https://firebase.google.com/docs/reference/js/v8/firebase.auth) to see everything you can do with the firebase.auth() object
 
 ### Login
 
@@ -206,4 +210,4 @@ You can now login. This pre-built form lets you register as a new user or sign i
 
 ### For Milestone 3
 
-* How might you tweak your Milestone 2 App.js to work with Firebase Auth instead?
+* How might you tweak your Milestone 2 App.js to work with Firebase Auth instead of?
