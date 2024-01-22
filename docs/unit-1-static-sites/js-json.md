@@ -1,6 +1,7 @@
 ---
 sidebar_position: 6
 title: JSON Objects
+sidebar_class_name: hidden
 ---
 # JavaScript Object Notation, or JSON
 

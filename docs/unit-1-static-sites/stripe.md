@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Handling Payments with Stripe
 
 Stripe is an online service that makes it easy for developers (and less technical folks) to create products, accept payments from a number of different providers, and fulfill orders in a safe way.

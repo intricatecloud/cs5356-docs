@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Hosting & Deployment
 
 Once you're ready to take code from your machine and put it up on the internet, you'll enter the world of Web Hosting & Deployment.

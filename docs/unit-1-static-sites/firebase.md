@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Firebase & Firebase Hosting
 
 For this class, we'll be using a handful of features provided by Firebase.
