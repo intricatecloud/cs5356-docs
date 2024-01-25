@@ -1,0 +1,38 @@
+---
+sidebar_position: 7
+---
+
+# Exercise: Define the APIs
+
+For this exercise, you'll take the data model that you worked on in [Exercise: Define the Data Model](./../data-models/exercise-define-data-model) and the functions you wrote in [Exercise: Work with Data in JS](./../data-models/exercise-work-with-data) and you'll define the set of APIs for your application
+
+## Resources
+
+We have 3 resources: `users`, `classes`, and `classSessions`
+
+And we had these functions:
+
+* `createClass(className)`
+* `createClassSession(className)`
+* `askQuestion(userName, question, classSession)`
+* `getClasses(userName)`
+* `getClassSession(sessionCode)`
+
+## Exercise
+
+To define your API:
+* Choose an HTTP Verb based on the action you want to take
+* Create a route for that resource
+* Describe an example of data that could be provided
+
+For example:
+
+`createClass(className)`
+```text
+POST /class
+
+{ "name": "name of the class" }
+```
+* I chose `POST` because we're going to create a resource
+* I chose `/class` because `class` is a resource
+* I chose a JSON object with a property called `name` to include the name of the class

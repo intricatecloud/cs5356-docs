@@ -1,0 +1,9 @@
+{
+  "label": "3. Authentication & Databases",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Everything you need to know to build your own Web App with an API, and host & monitor it."
+  },
+  "className": "hidden"
+}

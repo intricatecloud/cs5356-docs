@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 2
 title: Set Up your Dev Environment
 ---
 
@@ -11,6 +11,6 @@ Chrome & Firefox are great choices for browsers with good developer tooling. In 
 Avoid using Safari Developer Tools, its not worth the annoyance :shrug:.
 
 ## Install NodeJS
-Install Node v18 (the current Long Term Support release) using the installer for your particular platform - https://kinsta.com/blog/how-to-install-node-js/Links
+Install Node v18 (the current Long Term Support release) using the installer for your particular platform - https://kinsta.com/blog/how-to-install-node-js
 
 If you already have a NodeJS installation, or you want to install multiple versions of NodeJS, then you can use a tool like [nvm (node version manager)](https://github.com/nvm-sh/nvm).

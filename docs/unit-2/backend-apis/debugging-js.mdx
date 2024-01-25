@@ -1,0 +1,70 @@
+---
+sidebar_position: 10
+---
+
+# Debugging Javascript
+
+While you're working on all this code, it's helpful to have as much detail as you want available. So here are some recommendations to make developing & debugging a little easier within the NodeJS world.
+
+
+## Fast Reloads with Nodemon
+
+`nodemon` is a tool that will monitor your node app, and restart the app if it detects any changes in your code. This is already installed in your Milestone 2 project.
+
+```
+npm install --save nodemon
+```
+
+Usage:
+```
+nodemon app.js
+```
+
+## Using the Debugger
+
+In the browser, you could use the Debugger from within Chrome Dev Tools and step through your code. You can replicate the same thing in VS Code, but it takes a couple of steps.
+
+:::info 
+
+Note: For Milestone 2, copy and paste this gist into your .vscode/launch.json file in your repository:
+
+https://gist.github.com/intricatecloud/8bf533380f335544063b45ef366604c0
+
+* This assumes that you have VSCode open to your milestone-2 project directory. So you should see backend/ and frontend/ in the VSCode Side Bar
+
+:::
+
+You can then click on the Run & Debug panel in the Side Bar, and then select any of the scripts in the dropdown, depending on which tests you want to debug. For example, click on `npm test-db` to run the database.spec.js tests while being able to set breakpoints in VSCode.
+
+Select `npm start` if you want to run your server with the ability to set breakpoints as well.
+
+## View Access Logs
+
+Similar to the Access Logs that we viewed from our web server for static websites, we can see similar traffic for our express server. We'll need to install a tool called `morgan` [[link to docs](https://expressjs.com/en/resources/middleware/morgan.html)]that can log this information to the console.
+
+*This is already installed as part of your Milestone 2 project.
+
+```
+npm install --save morgan
+```
+
+and then add
+
+```js title="app.js"
+import express from 'express'
+// highlight-next-line
+import morgan from 'morgan'
+
+app.use(express.json())
+...
+// highlight-next-line
+app.use(morgan(combined))
+```
+
+The next time you receive a request, you'll see this in your console:
+
+```
+App is running on port 8000
+::1 - - [13/Mar/2023:03:03:30 +0000] "GET / HTTP/1.1" 200 11 "-" "PostmanRuntime/7.26.10"
+::1 - - [13/Mar/2023:03:04:11 +0000] "GET /chatroom HTTP/1.1" 404 147 "-" "PostmanRuntime/7.26.10"
+```

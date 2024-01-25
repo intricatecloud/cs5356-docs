@@ -1,0 +1,111 @@
+---
+sidebar_class_name: hidden
+---
+# Express & Node JS Cheat Sheet
+
+Some snippets to help you through common scenarios
+
+## Express
+
+### Modules with Named Exports
+
+If you have a file:
+
+```js title="database.js"
+export const getData = () => {
+  ...
+}
+```
+
+* `export` is a keyword to say that this variable can be accessed from another file
+
+Then you can import that file this way:
+
+```js title="app.js"
+import { getData } from './database.js'
+
+getData()
+```
+
+OR
+```js title="app.js"
+import * as database from './database.js'
+database.getData()
+```
+### Modules with Default Exports
+
+If you have a file
+```js title="database.js"
+const getData = () => {
+  ...
+}
+export default getData;
+```
+
+* `export default` is a keyword to say that the variable/object will be exported by default from this file
+* You can only have 1
+
+Then you can import it:
+```js title="app.js"
+import getData from './database'
+
+getData()
+```
+
+
+### generateRandomNumber
+
+Generates random 6-digit number
+
+```js
+const generateRandomNumber = () => {
+  return Math.floor(100000 + Math.random() * 900000)
+}
+```
+
+### Array.find
+
+Given this array
+
+```js
+const chatrooms = [{
+  name: "channel-1"
+}, {
+  name: "channel-2"
+}]
+```
+
+Find an element, given a condition defined as a function. Will return the 1st item it finds, or undefined if it can't find anything
+```
+const chatroom = chatrooms.find(chatroom => chatroom.name === 'channel-1')
+if (chatroom) {
+  console.log('found the chatroom!')
+} else {
+  console.log('No chatroom found')
+}
+```
+
+### Array.filter
+
+Given this data:
+
+```js
+const chatrooms = [{
+  name: "channel-1",
+  members: []
+}, {
+  name: "channel-2",
+  members: ["danny"]
+}]
+```
+
+Returns all elements that match a condition defined as a function. Will return a new array with all matching items.
+
+```js
+const chatroomsWithMembers = chatrooms.filter(chatroom => chatroom.members.length > 0)
+if (chatroomsWithMembers.length === 0) {
+  console.log('No chatrooms found')
+} else {
+  console.log('Found chatrooms with members', chatroomsWithMembers)
+}
+```

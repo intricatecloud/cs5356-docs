@@ -1,0 +1,214 @@
+---
+sidebar_position: 15
+---
+import AppMermaid from './_app-mermaid.mdx';
+
+# Deploy Express to Firebase Cloud Functions
+
+:::danger
+
+For Milestone 2, you need to use a Firebase account that is NOT linked to your @cornell.edu account. Create a new Firebase account linked to another email.
+
+There are Cornell security restrictions in Google Cloud that prevent @cornell.edu accounts from creating public Cloud Functions. So the solution is to use any other email for your Firebase account.
+
+:::
+
+This guide assumes that you're working with the milestone-2 template, which has this folder structure:
+
+```
+|-- backend
+|   |-- package.json
+|   |-- ...
+|-- frontend
+|   |-- package.json
+|   |-- ...
+```
+
+This walkthrough follows along with [the Firebase docs](https://firebase.google.com/docs/hosting/functions) using an existing Express project. They have some info on setting up Firebase with Express, but there were a couple of extra steps to be aware of.
+
+## Architecture
+
+For this project, we're working with a separate frontend + backend application. When we host it, it'll work something like this
+
+<AppMermaid />
+
+* __This guide will setup Firebase Cloud Functions for our backend__
+* Any requests to `/api` would be sent to our backend
+* The user can visit `/`, `/instructor-home`, `/login`, and `/logout` pages (previous section)
+
+
+## No build necessary
+
+No build step is necessary for the backend/ folder. Firebase knows how to read your package.json, can install all the dependencies listed in package.json, and creates an environment for your NodeJS applications to run in the cloud without you having to do anything additional.
+
+## Setup Cloud Functions
+
+:::info
+
+We **won’t** use `firebase init` here because we don't want a separate project, we'll just tweak our existing firebase.json
+
+:::
+
+__Step 1:__ Update your firebase.json to include the functions configuration + the rewrites under hosting:
+
+```json title=./firebase.json
+{
+  // highlight-start
+  "functions": {
+    "source": "backend/",
+    "function": "api",
+    "runtime": "nodejs16"
+  },
+  // highlight-end
+  "hosting": {
+    "public": "frontend/build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    // highlight-start
+    "rewrites": [{
+      "source": "/api/**",
+      "function": "api"
+    }, {
+    // highlight-end
+      "source": "**",
+      "destination": "/index.html"
+    }]
+  }
+}
+```
+
+* The `functions.source` property that we added tells Firebase where to look for our backend source files, and it should be the directory that contains your package.json which in our case is `backend/`
+* The `functions.function` is the name you can use to reference your Cloud Function, which we'll use next
+* The new `rewrites` property tells Firebase to route all requests going to `/api` and send them to the Cloud Function named `api`
+
+:::danger
+
+The function name __NEEDS__ to be "api". It won't work (without a couple of extra steps) without it. Milestone 2 is configured to work with this name.
+
+Those extra steps:
+* There are weird routing rules used by Firebase which requires that the function name needs to match the name used in the source path, and it also requires your Express application to also use the same name as a prefix.
+* For a __function__ named "myFunction", your __rewrite.source__ would need to be "/myFunction", and your Express application would need to use "/myFunction" as a prefix to all your routes.
+
+:::
+
+__Step 2:__ Create the main JS file to use with Firebase, and name it `backend/index-firebase.js`
+
+```js title=backend/index-firebase.js
+import functions from "firebase-functions";
+import expressApp from "./src/app.js";
+
+export const api = functions.https.onRequest(expressApp);
+```
+
+Then update your backend/package.json to set the `main` property to this new file `backend/index-firebase.js`.
+
+```json title=backend/package.json
+{
+  "name": "milestone-2-da335",
+  "version": "1.0.0",
+  "description": "",
+  // highlight-next-line
+  "main": "index-firebase.js",
+  ...
+}
+```
+
+:::danger
+
+index-firebase.js __NEEDS__ to export a variable named `api`. This is for the same reason thats flagged in Step 1.
+
+:::
+
+## Using the Emulator
+__Step 3:__ To check that it works, go to the root of your workspace, and run `npx firebase emulators:start`.
+
+Note: If you make any changes to your firebase.json, you'll need to restart your emulator.
+
+This will start up your frontend project, AND the backend/ project. If there’s something wrong with the configuration, you’ll either see an error or a warning.
+
+The output of that command will give you 2 URLs now - one URL where you can access your Cloud Function which in our case contains our Express backend, and one where you can access your Hosting server, which contains our React frontend.
+
+:::info
+
+Even though we have 2 URLs, we'll only be using 1 URL.
+
+We're using [Firebase Rewrite rules](https://firebase.google.com/docs/hosting/full-config) to allow us to use `fetch('/api/user')` from our frontend code.
+
+We __DON'T__ need to include the backend URL in our source code at all!
+
+:::
+
+If you visit localhost:5000, you’ll still see the Hello World page provided by Firebase, this time with successful requests to `/api/classes` for example.
+
+You can also test by using Postman, and making a request to `localhost:5000/api/user`, which would return a 401 for a user without cookies.
+
+## Deploy all of it
+
+Go to the root of your worksapce and run `npx firebase deploy` to deploy your code and make it public.
+
+The first time, this may take a few minutes as it copies your code and distributes it to multiple servers out of a Firebase data center.
+
+If you see your page with the provided URL from Firebase - you’re set! You can submit that URL for your Milestone 2 assignment. You should check that your application continues to work, but the next issue you’ll find is related to cookies.
+
+### Possible 403 Error: Forbidden
+
+You may see a 403 error as a response for any of your /api routes. If you don't see a 403, skip this section.
+
+`Your client does not have permission to get URL /api/user from this server`
+
+:::danger
+
+For Milestone 2, you need to use a Firebase account that is NOT linked to your @cornell.edu account. Create a new Firebase account linked to another email.
+
+There are Cornell security restrictions in Google Cloud that prevent @cornell.edu accounts from creating public Cloud Functions. So the solution is to use any other email for your Firebase account.
+
+:::
+
+If you see this error, and you double-checked that you are using a separate account with Firebase (not @cornell.edu):
+
+I ran into this error the first time, but not the second time. Just in case you wind up seeing it...
+* Go to the Google Cloud Console and visit your Functions dashboard - https://console.cloud.google.com/functions/list
+* Make sure you're logged in with the right account, and select the project name in the Top Left of the dashboard.
+* Click on your `api` function
+* Select the Permissions tab
+* Check that there is a a Principal named `allUsers` with role `Cloud Functions Invoker. If its not there, that may be the result of the error.
+* If its not there, click Grant Access, and type `allUsers` into "New principals" text box. Select the Cloud Functions Invoker role and click Save.
+
+![The Cloud Functions dashboard with arrows pointing key areas](firebase-allUsers-change.png)
+
+## Get cookies working
+
+Because of the features that Firebase provides for you, there are some limitations with what you can do with Cloud Functions - in particular, cookies. [More info here](https://firebase.google.com/docs/hosting/manage-cache#using_cookies)
+
+The solution is to force the app to use 1 cookie, and rename it from `session` to `__session` (thats with 2 underscores). Make the updates below:
+
+```js title=backend/src/app.js
+app.use(
+  cookieSession({
+    secret: "cookiesecret",
+    // highlight-next-line
+    signed: false,
+    // highlight-next-line
+    name: '__session'
+  })
+);
+```
+* This will remove our `session.sig` cookie. For the purpose of our prototype this is fine - but for a real application, this may be problematic. We need a way to check that cookies haven't been tampered with.
+* A __real__ authentication system would provide this, and that'll be covered in Milestone 3.
+
+Make your changes, and run `npx firebase deploy` to get your live environment up to date, and confirm that your app continues to work.
+
+## Some things to be aware of:
+
+### Viewing Express Errors
+
+Turns out Firebase does not collect `console.error()` messages when you deploy to Cloud Functions, although it does work with the emulator. You can use their `functions.logger.log()` to print error messages that you can view in the Firebase console:
+
+```jsx
+const functions = require('firebase-functions')
+...
+functions.logger.log("Failed to check session cookie", error);
+```

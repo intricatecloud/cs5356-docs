@@ -1,0 +1,147 @@
+---
+sidebar_position: 12
+---
+
+# Intro to React
+
+## What is React?
+
+React is a UI Library for Javascript to make it easier to create interactive websites, especially when you're displaying data from a remote URL and displaying it dynamically.
+
+For Milestone 2, you'll be writing very little React, but enough to get familiar with it. If you're new to React, then read on. If you've already worked with it, feel free to skip this.
+
+:::success
+
+For the most up-to-date explanations and quality tutorials & documentation, refer to the [React docs](https://react.dev/learn).
+
+This guide assumes that you've read [the quick start.](https://react.dev/learn)
+
+:::
+
+## Why use it at all?
+
+It is possible to build web applications without UI libraries or complex-looking frameworks just to put together some HTML. But its hard to get right.
+
+In previous years, we used Express with EJS templates (similar to Flask HTML projects in Python) to build a server that replied to both API requests and HTML requests. This is easier to get started with, but unfortunately, limits you over the long term.
+
+But for web applications, you hit a point where you want more interactivity in your app, and then you start to run into various limitations of this architecture. The answer you usually find is to use a single-page-app framework like React instead, but by this point, its too late to change course.
+
+React has a little bit of a learning curve, but leaves you with more opportunity to grow over the long term, as long as you're fine with writing Javascript.
+
+:::info
+
+And by the way, if you don't like React or it doesn't make sense to you, try one of the other view libraries like [Vue](https://vuejs.org/), [Svelte](https://svelte.dev/). They all share similar concepts with a different syntax to write it.
+
+:::
+
+## Exercise 1: Displaying Posts with React
+
+For this exercise, we'll re-do the exercise from [1. Static Websites/JS Practice](../../unit-1/../unit-1-static-sites/practice-exercises.md) where we take a static/hardcoded array of data and we dynamically create HTML to display it - this time with React.
+
+So for this exercise, try that using React.
+
+1. Use this [Codepen template](https://codepen.io/pen?template=zYJJMOW), or the snippets below if you want to do it in an editor.
+2. Using the [React cheat sheet](./../../resources/react-cheat-sheet) + some googling, implement the prompts
+
+```html title=html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+<div id="root"></div>
+```
+
+```js title=js
+import React from 'https://esm.sh/react@18.2.0'
+import ReactDOM from 'https://esm.sh/react-dom@18.2.0'
+
+const postsData = [{
+  "postedBy": "lmenguy0",
+  "message": "Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam. Suspendisse potenti.",
+  "imageUrl": "http://dummyimage.com/190x100.png/ff4444/ffffff",
+  "postedOn": "1/14/2023"
+}, {
+  "postedBy": "ubazelle1",
+  "message": "Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.",
+  "imageUrl": "http://dummyimage.com/233x100.png/5fa2dd/ffffff",
+  "postedOn": "8/3/2022"
+}, {
+  "postedBy": "jschreurs2",
+  "message": "Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis.",
+  "imageUrl": "http://dummyimage.com/189x100.png/5fa2dd/ffffff",
+  "postedOn": "11/16/2022"
+}, {
+  "postedBy": "kdrew3",
+  "message": "Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
+  "imageUrl": "http://dummyimage.com/110x100.png/5fa2dd/ffffff",
+  "postedOn": "8/26/2022"
+}, {
+  "postedBy": "mpartlett4",
+  "message": "Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.",
+  "imageUrl": "http://dummyimage.com/106x100.png/5fa2dd/ffffff",
+  "postedOn": "4/18/2022"
+}]
+
+const App = () => {
+  /**
+    Iterate over postsData, and for every post object,
+    create and display <Post> component that displays
+    the properties of the post object.
+  */
+  return (<div>Hello World</div>)
+}
+
+ReactDOM.render(<App />,
+document.getElementById("root"))
+```
+
+## Exercise 2: fetch() and display data with React
+
+Now, for a more real use case - getting data from an external source, and then displaying it with React.
+
+For this exercise, you'll use the `fetch()` API (using Promises) to request data from NYC's Open Data. You'll then read the data and parse it as JSON.
+
+1. Use this [Codepen template](https://codepen.io/pen?template=vYzzQXB), or copy the snippet below
+2. Using the [React cheat sheet](./../../resources/react-cheat-sheet) + some googling, implement the prompts
+
+
+```html title=html
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+  <div id="root" class="mt-2 columns">
+  </div>
+</body>
+
+</html>
+```
+
+```js title=js
+  import React, { useState, useEffect } from 'https://esm.sh/react@18.2.0'
+import ReactDOM from 'https://esm.sh/react-dom@18.2.0'
+
+/* This dataset is free, provided by NYC Open Data.
+   This shows all the indoor and outdoor pools under
+   the jurisdiction of NYC Parks Department.
+
+   See more below
+   https://data.cityofnewyork.us/Recreation/NYC-Parks-Pools/y5rm-wagw
+*/
+const datasetUrl = "https://data.cityofnewyork.us/resource/y5rm-wagw.json"
+
+/*
+1. When the App component loads for the first time, use the `useEffect(() => {...})`
+  and call fetch() within that function to request the data at datasetUrl
+2. Save the response of the data to a state value
+3. Based on the state value, display a component that has a Name element and a Borough element
+*/
+
+const App = () => {
+  return (<div>hello world</div>)
+}
+
+ReactDOM.render(<App />,
+document.getElementById("root"))
+```
