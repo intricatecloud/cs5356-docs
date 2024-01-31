@@ -78,12 +78,4 @@ So for this exercise, we'll try that using Javascript and its API for working wi
     <summary>
     View examples from real students when you're done.
     </summary>
-    <p>My solution: https://codepen.io/intricatecloud/pen/RwBBYaP</p>
-    <p>Student solutions:</p>
-    <p>https://codepen.io/jiovine/pen/abjQamV</p>
-    <p>https://codepen.io/christywu/pen/yLqQxPg</p>
-    <p>https://codepen.io/jjw121/pen/MWBzqmJ</p>
-    <p>https://codepen.io/cw656/pen/LYBXJZd</p>
-    <p>https://codepen.io/aria-51/pen/xxJQaZP</p>
-    <p>https://codepen.io/shunqilei/pen/LYBXJEQ</p>
 </details>
