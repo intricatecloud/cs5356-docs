@@ -1,8 +1,7 @@
 ---
 sidebar_position: 7
-sidebar_class_name: hidden
 ---
-# Practice 2.1
+# Practice 2
 
 ## Exercise 1: Create some elements from static data
 

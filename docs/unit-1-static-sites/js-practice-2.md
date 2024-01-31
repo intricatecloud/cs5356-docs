@@ -1,10 +1,10 @@
 ---
 sidebar_position: 8
-title: Practice 2.2
+title: Practice 3
 sidebar_class_name: hidden
 ---
 
-## Practice 2.2: Create some elements from external data
+## Practice 3
 
 Now, for a more real use case - getting data from an external source.
 
