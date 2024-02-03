@@ -47,4 +47,4 @@ tags: [intro]
 - Worst CS Topic:
 ```
 * Create a Pull Request on intricatecloud/cs5356-docs (see this guide for [Creating a Pull Request from a Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork))
-* Submit the link to your GitHub Pull Request on the updated class page on this [Canvas Assignment](https://canvas.cornell.edu/courses/61594/assignments/624874). Your URL will look something like `https://cs5356.intricatecloud.io/blog/2023/01/23/your-cornell-netid`
+* Submit the link to your GitHub Pull Request on the updated class page on this [Canvas Assignment](https://canvas.cornell.edu/courses/61594/assignments/624874). Your URL will look something like `https://github.com/intricatecloud/cs5356-docs/pulls/123`

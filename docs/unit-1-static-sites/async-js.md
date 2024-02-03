@@ -1,7 +1,6 @@
 ---
 sidebar_position: 8
 title: Async JS
-sidebar_class_name: hidden
 ---
 
 # Asynchronous Programming with JS
