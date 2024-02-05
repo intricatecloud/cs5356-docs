@@ -12,7 +12,7 @@ A very common pattern in frontend development is:
 
 So for this exercise, we'll try that using Javascript and its API for working with the browser.
 
-1. Use this [Codepen template](https://codepen.io/intricatecloud/pen/RwBBYaP), or the snippet below if you want to do it in an editor.
+1. Use this [Codepen template](https://codepen.io/pen?template=RwBBYaP), or the snippet below if you want to do it in an editor.
 2. Read the prompts within the `<script>` section of the Codepen
 3. Using the [Vanilla JS cheat sheet](../resources/vanilla-js-cheatsheet.md) + some googling, implement the prompts
 
@@ -75,7 +75,6 @@ So for this exercise, we'll try that using Javascript and its API for working wi
 
 </html>
 ```
-
 
 <details>
     <summary>
