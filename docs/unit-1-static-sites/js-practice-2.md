@@ -1,7 +1,6 @@
 ---
 sidebar_position: 8
 title: Practice 3
-sidebar_class_name: hidden
 ---
 
 ## Practice 3

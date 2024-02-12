@@ -1,5 +1,4 @@
 ---
-sidebar_class_name: hidden
 ---
 
 # Handling Payments with Stripe
