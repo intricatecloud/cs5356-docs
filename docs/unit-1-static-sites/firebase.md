@@ -1,5 +1,4 @@
 ---
-sidebar_class_name: hidden
 ---
 
 # Firebase & Firebase Hosting
