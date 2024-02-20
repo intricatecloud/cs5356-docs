@@ -1,5 +1,4 @@
 ---
-sidebar_class_name: hidden
 ---
 
 # Vanilla JS & HTML Cheat Sheet
