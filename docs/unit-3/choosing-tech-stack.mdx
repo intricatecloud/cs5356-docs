@@ -1,0 +1,135 @@
+---
+sidebar_position: 1
+---
+# Choosing a Tech Stack
+
+# Choose a platform to build for
+
+```mermaid
+flowchart LR
+  Choice["Do you need access to hardware"] --> Yes
+  Yes --> Disk["SD Cards, Drives"]
+  Yes --> GPS["GPS Info"]
+  Yes --> Accelerometer
+  Yes --> GPUs
+  Disk --> NativeMobile
+  GPS --> NativeMobile
+  Accelerometer --> NativeMobile
+  GPUs --> NativeMobile
+  Choice["Do you need access to hardware"] --> No
+  No --> WebApp
+```
+
+# Choose a language
+
+## If you want to target Mobile
+
+```mermaid
+flowchart TD
+  NativeMobile --> Android
+  NativeMobile --> iOS
+  NativeMobile --> Both
+  Android --> L1["Java/Kotlin"]
+  Android --> Flutter
+  iOS --> L2["Swift, Obj C"]
+  iOS --> Flutter
+  Both --> L4["Javascript For Mobile"]
+  Both --> CrossPlatform
+
+  L4 --> ReactNative
+  L4 --> Cordova
+  subgraph CrossPlatform
+    L3["C# with Xamarin"]
+    Flutter
+  end
+  subgraph Native
+    L1
+    L2
+  end
+  subgraph HybridMobile
+    ReactNative
+    Cordova
+  end
+
+```
+
+## If you want to target Web
+
+```mermaid
+flowchart TD
+  WebApp --> Choice["How much JS do you want to write"]
+  Choice --> Little
+  Little --> Python
+  Little --> Java
+  Little --> Ruby
+  Choice --> Lots
+  Lots --> L5["Javascript for Web"]
+  L5 --> Express
+  L5 --> NextJS
+  L5 --> Create-React-App
+```
+
+# Choose an Architecture
+
+## For simple needs
+
+If you're ONLY going to be using Firebase Authentication & Firebase Firestore, you can usually cut out the need for a backend by relying on Firebase.
+
+```mermaid
+flowchart LR
+  App["Web or Mobile"] --> L1["Firebase Firestore"]
+  App["Web or Mobile"] --> L2["Firebase Auth"]
+  App["Web or Mobile"] --> L3["Firebase Cloud Storage"]
+```
+
+This makes it easy to get started if you feel comfortable working with tools like React on the Frontend.
+
+There are some downsides:
+* Releasing an update can take 12-24 hours over a large sample size
+* No way of guaranteeing that someone updates to the latest version
+* Not all 3rd party APIs support requests from the browser, but this works fine on Mobile
+* Using API keys or other sensitive info from the Frontend is insecure
+* Web and Mobile Apps cannot connect DIRECTLY to a database
+
+## For more complex needs
+
+Examples:
+* If you need to integrate with a 3rd party API that requires an API key
+* If you are aggregating data across multiple sources
+* You need more control over the data used by your app
+
+```mermaid
+flowchart LR
+  App["Web"] --> Backend
+  Backend --> Firestore["Firebase Firestore"]
+  Backend --> API["3rd Party APIs"]
+  Backend --> Data["Additional Data"]
+```
+
+```mermaid
+flowchart LR
+  App["Mobile"] --> Backend
+  App["Mobile"] --> Firestore["Firestore or other DBs"]
+  Backend --> API["3rd Party APIs"]
+  Backend --> Data["Additional Data"]
+```
+
+
+Tradeoffs:
+* Setting up a backend is an additional app to manage
+* You have to build your own security around your database or other 3rd Party APIs
+* Updating the backend has immediate effects
+
+## But dont do this
+
+```mermaid
+flowchart LR
+  App["Web or Mobile"] --> Backend
+  App["Web or Mobile"] --> Firestore
+  App["Web or Mobile"] --> API
+  Backend --> Firestore["Firebase Firestore"]
+  Backend --> API["3rd Party APIs"]
+  Backend --> Data["Additional Data"]
+```
+
+You have to make your calls to Firebase or other 3rd party APIs from 1 place, and not multiple places. This will be difficult to troubleshoot and manage!

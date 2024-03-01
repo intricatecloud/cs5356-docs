@@ -1,0 +1,68 @@
+---
+sidebar_position: 13
+---
+# Developing the Frontend
+
+## Starting up the frontend
+
+The frontend/ project is created using a tool called create-react-app which makes it very easy to have a hello world example running in React. Find out what else you can do with [create-react-app on their docs page](https://create-react-app.dev/docs/getting-started).
+
+It comes with a development server that you can use with `npm start`
+It comes with a build process that produces a static website of HTML/CSS and JS using `npm run build`, which you can host wherever you want.
+
+### Overview
+
+* frontend/src/App.js contains the main code for our app. Here, we define all the available pages for our application, using the `<Router>` component (which comes from [react-router](https://reactrouter.com/en/main/start/concepts))
+* frontend/src/pages/*.js contains React components that represent each Page in the application
+* frontend/src/components/*.js contains React components that represent smaller widgets that are used within Pages
+
+### Routing
+
+* There are 6 routes
+  * /instructor-home
+  * /instructor/:sessionCode
+  * /login
+  * /:sessionCode
+  * /logout
+  * /
+* There is one special route not listed here, /api.
+
+:::caution
+
+Remember: Cookies only work as long as the frontend and the backend are running under the same domain.
+
+If we ran our React server on `localhost:8000` and tried to use `fetch('http://localhost:5000/api/user')`, the cookie won't stick around.
+
+:::
+
+### Proxy /api
+
+One way we can accomplish this is by using a feature of create-react-app that allows us to proxy [any unknown request](https://create-react-app.dev/docs/proxying-api-requests-in-development/) to another URL.
+
+This means any requests going to `http://localhost:3000/api/**` can be sent to your server instead. As long as you never define a `<Route>` with the same path.
+
+You could see this in package.json
+
+```js title=package.json
+"dependencies": { ... },
+// highlight-next-line
+"proxy": "http://localhost:8080",
+"scripts": { ... }
+```
+
+:::info
+
+This setting only applies during development, and it is upto the developer to configure it in their hosting environment. Firebase Hosting provides this exact feature, so we'll be able to use this when we're ready to deploy our project.
+
+:::
+
+### Reading a React component
+
+Some tips to help you figure out what a component is doing
+
+1. Look for usages of `props.` to see which props a component may need.
+2. `useState` will usually be found at the top of the component, and this would list out all the values that the component may change over time.
+3. `useEffect` will show you all the places where state values may be changed
+4. Look for the `return <div>...` statement towards the bottom of the component to view the HTML thats being displayed by React
+
+See more on the [React Cheat Sheet](./../../resources/react-cheat-sheet)

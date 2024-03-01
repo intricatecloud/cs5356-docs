@@ -1,7 +1,7 @@
 ---
 sidebar_position: 8
 title: Async JS
----
+--------
 
 # Asynchronous Programming with JS
 

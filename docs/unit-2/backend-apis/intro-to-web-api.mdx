@@ -1,0 +1,196 @@
+---
+sidebar_position: 6
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Intro to Web APIs
+
+A common way to work with data and services from across the internet is via Web APIs or more specifically, an API powered by the HTTP protocol. We already used this protocol a bunch while we were working on Milestone 1.
+
+For Milestone 1, we had a Web Server that was meant to serve HTML files and other supporting resources to load in a browser.
+
+Now, we can make a Web API Server that was meant to serve data (or other functionality) for use in a browser OR anywhere else. We can then host it on a variety of hosting platforms.
+
+In Milestone 1 - we used `fetch()` to get some data from a file on our web server.
+
+```js
+fetch('/data/products.json')
+  .then(res => res.json)
+  .then(data => console.log(data))
+```
+
+For Milestone 2 - we'll respond to a `fetch()` request with our own Web API Server.
+
+## HTTP Protocol
+
+Web Servers work by opening a "socket" on your computer and listening for incoming requests, whether they're from your local network or from the public internet. `python3 -m http.server` starts a web server running on port 8000 by default.
+
+Once you connect to a "socket", you can either write raw bytes, or even text. This is where HTTP comes in - HTTP refers to the protocol thats used to interact with the Web Server.
+
+You open a socket, and write the text below to that socket and wait for a response.
+
+```plaintext title="Example HTTP Request"
+GET / HTTP/1.1
+Host: google.com
+
+```
+
+(after some short amount of time)
+
+```plaintext title="Example Response"
+HTTP/1.1 301 Moved Permanently
+Location: http://www.google.com/
+Content-Type: text/html; charset=UTF-8
+...
+```
+
+### Requests
+
+Let's break down everything we see in the request.
+
+```plaintext title="Example HTTP Request"
+GET / HTTP/1.1
+Host: google.com
+
+```
+The first line is called a __request line__
+
+- `GET` - an __HTTP Verb__ that describes what you're trying to do. More on this below.
+- `/` - a __Path__ to a file that you want to request.
+- `HTTP/1.1` - The version of HTTP you're writing.
+
+The 2nd line is called a __Header__. A header is a `Key: Value` pair, separated by a `:`
+- `Host: google.com` - This is a header named `Host` and the value is `google.com` telling the server that it wants the Request Line (from above) from this host called `google.com`.
+
+Once you send this over, you wait for a response.
+
+### Response
+
+Let's break down everything in the response
+
+```plaintext title="Example Response"
+HTTP/1.1 301 Moved Permanently
+Location: http://www.google.com/
+Content-Type: text/html; charset=UTF-8
+...
+
+<HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
+<TITLE>301 Moved</TITLE></HEAD><BODY>
+<H1>301 Moved</H1>
+The document has moved
+<A HREF="http://www.google.com/">here</A>.
+</BODY></HTML>
+```
+
+The first line is the __response line__
+
+- `HTTP/1.1` is the version of HTTP used in the response
+- `301` is the __status code__, meaning the URL has been moved and the user should be Redirected.
+- `Moved Permanently` a description for that status code
+
+The second line is a __Header__ (the same format as the Headers in the Request)
+- `Location: http://www.google.com` - This is a header named `Location` and the value is `http://google.com`. This is where the user should be redirected to.
+- `Content-Type: text/html; charset=UTF-8` - This is a header named `Content-Type` and the value is `text/html; charset=UTF-8`. This tells the user that the body of the response contains HTML.
+
+
+After all the headers (and a new line), we can see the response from the server containing the data we want. In this case, an HTML describing that the page has moved to another URL.
+
+## HTTP
+
+### Verbs
+
+__Verbs__ in HTTP help us to convey some additional meaning to the URL. The available verbs are:
+
+* GET - used by default to GET things from your API
+* POST - used to suggest you will create, change, or take some action on the provided data
+* PUT - used to suggest you will update data with other data
+* PATCH - used to suggest you will update data with other data
+* DELETE - used to suggest you want to delete some data
+* *there are others in the full spec, these are the most common
+
+For example:
+
+* `GET /` - means return the page on `/` path
+* `GET /my-account` means return the `/my-account` page
+* `POST /login` means log the user in
+* `POST /payments` means create a payment
+* `PUT /credit-card` means update some credit card info
+
+### Headers & Bodies
+
+You can send more data via the HTTP Body, if you tell the server what to expect by passing a value in the `Content-Type` header.
+
+<Tabs>
+<TabItem value="text" label="Text">
+
+```plaintext
+POST /chatroom
+Content-Type: application/json
+
+{"name": "class-channel"}
+```
+
+</TabItem>
+<TabItem value="js" label="Javascript">
+
+```js
+fetch('/chatroom', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: '{ "name": "class-channel" }'
+})
+```
+
+</TabItem>
+</Tabs>
+
+## RESTful APIs
+
+RESTful APIs refer to a design pattern of defining URLs and status codes to manage data thats available on an external URL.
+
+REST stands for:
+* REpresentational
+* State
+* Transfer
+
+In a RESTful API - you define your __resources__ - the data that you're managing. We called this __Domain Objects__ in the last section. And for every __resource__, you can define a set of URLs that you can use to manage it.
+
+### URLs
+
+Let's assume our __resource__ is `chatroom`. We can represent Create, Read, Update, and Delete functionality using the following URLs & Status Codes.
+
+* `GET /chatrooms` - to get all chatrooms
+  * Respond with `200 OK` and the list of chatrooms in the body
+* `GET /chatroom/1` - to get the chatroom with ID: 1
+  * Respond with `404 Not Found` if you couldn't find the ID
+  * Respond with `200 OK` and the chatroom details in the body
+* `POST /chatroom` - to create a new chatroom with data provided in the body
+  * Respond with `400 Bad Request` if the request is missing data in the body
+  * Respond with `201 Created` if you could successfully create the new chatroom
+* `PUT /chatroom/1` - to update a property about a chatroom with data provided in the body
+  * Respond with `404 Not Found` if you couldn't find the ID
+  * Respond with `201 Created` if you could successfully update the data
+* `DELETE /chatroom/1` - to delete the chatroom with ID 1
+  * Respond with `404 Not Found` if you couldn't find the ID
+  * Respond with `200 OK`
+
+These URLs follow a pattern for a __resource__:
+
+* `GET /resources` - Return all resources
+* `GET /resource/id` - Return resource with ID
+* `POST /resource` - Create resource
+* `PUT /resource/id` - Update a resource by ID
+* `DELETE /resource/id` - Delete a resource by ID
+
+### Status Codes
+
+These Status Codes also follow a pattern:
+* `200 OK` to indicate success
+* `201 Created` to indicate that a resource was created
+* `400 Bad Request` to indicate that there was something wrong in the request, and it couldn't be processed
+* `404 Not Found` to indicate that a resource was not found
+
+As an example, we're building an API to support our sample chatroom application. And in the last section, we defined javascript functions for `createUser`, `createChatroom`, `joinChatroom`, and `sendMessage`.

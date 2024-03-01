@@ -1,3 +1,6 @@
+---
+---
+
 # Vanilla JS & HTML Cheat Sheet
 
 ## Find DOM elements
