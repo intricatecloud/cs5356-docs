@@ -1,0 +1,57 @@
+grader notes
+
+* grading will be a bit more complicated so bear with me
+
+* wireframe review
+* autograder checks
+* functional review of deployed site
+* analytics
+
+* autograder checks - most of the verification of the backend code will be by checking the autograder checks, and we can do partial credit for these checks.
+
+the autograder checks have 4 parts to them
+
+* backend lint
+* backend test
+* frontend build
+* frontend lint
+
+You can go to each Pull Request, and then go to the Pull Request checks section to get to the autograder check
+
+Once you've pulled up the autograder results, you can review which ones are passing:
+
+* points off for failing either the frontend build or the backend test autograder
+* partial points off for failing the eslint checks altogether (one penalty for either)
+
+---
+
+functional review
+
+* open up the student submitted website
+* you should be able to login
+* you should be able to create a class
+* you should be able to create
+
+---
+wireframe review
+
+missing use cases:
+* a landing page
+* text boxes for name and question in the ask a question page
+* upvote/downvote in the session page
+* instructor can create a class
+* instructor can create a class session
+
+this is what correct looks like:
+
+* paste the figma wireframe link into this spreadsheet so I can check for dupes
+---
+
+plagiarism check
+
+* pull app.js for all students, and compare each one to each other one. someone will submit an identical one.
+---
+
+analytics
+* the screenshot should be of the right page in firebase
+* there should be separate screenshots. partial points off for vague/ambiguous screenshots.

@@ -34,114 +34,231 @@ And by the way, if you don't like React or it doesn't make sense to you, try one
 
 :::
 
-## Exercise 1: Displaying Posts with React
+# Creating Components with React
 
-For this exercise, we'll re-do the exercise from [1. Static Websites/JS Practice](../../unit-1/../unit-1-static-sites/practice-exercises.md) where we take a static/hardcoded array of data and we dynamically create HTML to display it - this time with React.
+In this section, we'll go over the basics of React so that you can start creating and using your components in your app.
 
-So for this exercise, try that using React.
+We were reviewing a snippet of React code below:
 
-1. Use this [Codepen template](https://codepen.io/pen?template=zYJJMOW), or the snippets below if you want to do it in an editor.
-2. Using the [React cheat sheet](./../../resources/react-cheat-sheet) + some googling, implement the prompts
-
-```html title=html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-
-<div id="root"></div>
-```
-
-```js title=js
-import React from 'https://esm.sh/react@18.2.0'
-import ReactDOM from 'https://esm.sh/react-dom@18.2.0'
-
-const postsData = [{
-  "postedBy": "lmenguy0",
-  "message": "Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam. Suspendisse potenti.",
-  "imageUrl": "http://dummyimage.com/190x100.png/ff4444/ffffff",
-  "postedOn": "1/14/2023"
-}, {
-  "postedBy": "ubazelle1",
-  "message": "Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.",
-  "imageUrl": "http://dummyimage.com/233x100.png/5fa2dd/ffffff",
-  "postedOn": "8/3/2022"
-}, {
-  "postedBy": "jschreurs2",
-  "message": "Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis.",
-  "imageUrl": "http://dummyimage.com/189x100.png/5fa2dd/ffffff",
-  "postedOn": "11/16/2022"
-}, {
-  "postedBy": "kdrew3",
-  "message": "Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
-  "imageUrl": "http://dummyimage.com/110x100.png/5fa2dd/ffffff",
-  "postedOn": "8/26/2022"
-}, {
-  "postedBy": "mpartlett4",
-  "message": "Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.",
-  "imageUrl": "http://dummyimage.com/106x100.png/5fa2dd/ffffff",
-  "postedOn": "4/18/2022"
-}]
-
-const App = () => {
-  /**
-    Iterate over postsData, and for every post object,
-    create and display <Post> component that displays
-    the properties of the post object.
-  */
-  return (<div>Hello World</div>)
+```jsx
+const ProductElement = (props) => {
+  return (
+    <div class="column">
+      <figure class="image pr-5" style="width: 128px; height: 128px;">
+        <img style="height: 100%; object-fit: cover" src={props.product.imageUrl}>
+      </figure>
+      <div class="title">{props.product.name}</div>
+      <div class="subtitle">{props.product.description}</div>
+    </div>
+    ...
+  )
 }
-
-ReactDOM.render(<App />,
-document.getElementById("root"))
+...
+<ProductElement product={product}>
 ```
 
-## Exercise 2: fetch() and display data with React
+Here's what this component might look like with some test data:
 
-Now, for a more real use case - getting data from an external source, and then displaying it with React.
+![a product showing an image, a title, and a subtitle](./c2-m2-react-example.png)
 
-For this exercise, you'll use the `fetch()` API (using Promises) to request data from NYC's Open Data. You'll then read the data and parse it as JSON.
+There are a number of things here to notice
+* There is a function named `ProductElement` - called functional components
+* It has a parameters named `props` - properties that you can "pass" to a component
+* It returns what looks like HTML - the syntax is called JSX and it's similar to HTML
+* You can then use it as if it was an HTML element
 
-1. Use this [Codepen template](https://codepen.io/pen?template=vYzzQXB), or copy the snippet below
-2. Using the [React cheat sheet](./../../resources/react-cheat-sheet) + some googling, implement the prompts
+## Component Lifecycle
 
+React takes advantage of a common set of patterns of web development to make it easier to build on the web. One of those patterns is the page lifecycle.
 
-```html title=html
-<html>
+Commonly found in mobile development, you can imagine your web page to have a lifecycle - a set of steps that it follows as it transitions from one state to the next and you leave the page or close the tab, thus completing the lifecycle.
 
-<head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-</head>
+Web pages will generally follow the steps below:
+* Download all HTML
+* Download any CSS referenced in HTML
+* Download any Javascript
+* Load CSS
+* Load Javascript and execute it
+* Fire page onLoad event <- this last step here marks the end of a web page loading. At this point, your React components begin loading.
 
-<body>
-  <div id="root" class="mt-2 columns">
+React components follow their own lifecycle once they start loading.
+* Create an instance of a React component
+* "Mount" the React component by displaying the "rendered" HTML based on any props
+* Update the React component if any props change
+* Destroy the React component if it is no longer displayed
+
+## Functional Components
+
+Functional Components refer to Components that are defined as Javascript functions.
+
+There are also Class Components, components that are defined as Javascript Classes, however, they are more verbose to write. It is helpful to see a Class Component and then see how you can write them as a function.
+
+Here's a Class Component, and we'll review how this works based on the Component Lifecycle
+
+```jsx
+class NavBar extends React.Component {
+  constructor(props) {
+    super(props)
+    // any component variables go here
+  }
+
+  componentDidMount() {
+    // run code when the component has finished mounting
+  }
+
+  componentDidUpdate(props, newProps) {
+    // run code when props have changed
+  }
+
+  render() {
+    return (
+      <nav>...</nav>
+    )
+  }
+}
+```
+
+* We define a Class named NavBar that extends React.Component
+* We define a constructor that receives props, and forwards it to the parent constructor
+* We define a function `componentDidMount` which is called by React when the component has been instantiated and "mounted" to the page
+* We define a function `componentDidUpdate` which is called by React when the props passed to the component have changed.
+* We define a function `render` which is called by React to return the HTML for the component
+
+Now, let's see in what order these are called.
+1. React will instantiate your component first, doing something similar to `new NavBar()`. This will run the code in the constructor and save the instance.
+2. React will then call `render` first and return any HTML generated by the function and add it to the page. The component is considered "mounted" at this point
+3. React will then call `componentDidMount` and run any custom code.
+4. If any props passed to the component have changed, then call `componentDidUpdate` with the current and new props.
+
+It is helpful to know the lifecycle, but it can be lengthy to write, so React offers Functional Components to help simplify this process.
+
+```jsx
+const ProductElement = (props) => {
+  return (
+    <div class="column">
+      <figure class="image pr-5" style="width: 128px; height: 128px;">
+        <img style="height: 100%; object-fit: cover" src={props.product.imageUrl}>
+      </figure>
+      <div class="title">{props.product.name}</div>
+      <div class="subtitle">{props.product.description}</div>
+    </div>
+    ...
+  )
+}
+...
+<ProductElement product={product}>
+```
+
+The component goes through all the same lifecycle steps, but the way we read/write the component is different.
+
+* Instead of a Javascript class, the component is written as a function. React will do something similar to `const element = ProductElement(props)`
+* When the component is instantiated, it will run the code in the function once and use the returned HTML as the output of the component.
+* Once the component is considered mounted, it will run the code in `useEffect`, a React "hook" - a way to hook into the React lifecycle and run some code. This code can cause an "effect" so React will run the "effect" and then return the latest updated HTML.
+
+## HTML & JSX
+
+React uses a syntax named JSX, which is very similar to HTML except for a few small differences.
+
+* React components generally start with a Capital Letter, and HTML elements usually start with a lowercase letter
+* Components should return just 1 HTML element, if you need to return multiple, you need to wrap them in a `<div>`
+* You can't use the `class=` property in your component, it needs to be `className` - `<button class="button is-primary">` is wrong. `<button className="button is-primary">` is right
+* You can use Javascript expressions within your React components, this is where it starts getting really powerful!
+
+Let's take a look at this example, which displays a list of classic books, passing their names as props.
+
+```jsx
+const BookList = (props) => {
+  return (
+    <div>
+      <ul>
+      { props.books.map(book => {
+          return <li>{book}</li>
+        })
+      }
+      </ul>
+    </div>
+  )
+}
+...
+<BookList books={['The Great Gatsby', 'Frankenstein', 'Oliver Twist' ]}>
+```
+
+* You can begin/end a Javascript expression by using `{ }`.
+* The first expression is `props.books.map(...)`. This is a way of iterating through each item in the array, and returning HTML for that item.
+* You can have nested JSX expressions.
+* `book => { return <li>{book}</li> }` . This function returns `<li>` elements, using the name of the book as a JSX expression.
+
+This would produce this output in HTML:
+
+```html
+<div>
+  <ul>
+    <li>The Great Gatsby</li>
+    <li>Frankenstein</li>
+    <li>Oliver Twist</li>
+  </ul>
+</div>
+```
+
+### React State
+Another key feature of React is the concept of "state" which refers to any data that is used by a component that might change later over time.
+
+Every component shown previously is "stateless" - they currently display static data and nothing will change over time.
+
+For example
+
+```jsx
+const QuestionDetail = props => {
+  return <div>
+    {props.questionText} - {props.user}
   </div>
-</body>
-
-</html>
-```
-
-```js title=js
-  import React, { useState, useEffect } from 'https://esm.sh/react@18.2.0'
-import ReactDOM from 'https://esm.sh/react-dom@18.2.0'
-
-/* This dataset is free, provided by NYC Open Data.
-   This shows all the indoor and outdoor pools under
-   the jurisdiction of NYC Parks Department.
-
-   See more below
-   https://data.cityofnewyork.us/Recreation/NYC-Parks-Pools/y5rm-wagw
-*/
-const datasetUrl = "https://data.cityofnewyork.us/resource/y5rm-wagw.json"
-
-/*
-1. When the App component loads for the first time, use the `useEffect(() => {...})`
-  and call fetch() within that function to request the data at datasetUrl
-2. Save the response of the data to a state value
-3. Based on the state value, display a component that has a Name element and a Borough element
-*/
-
-const App = () => {
-  return (<div>hello world</div>)
 }
 
-ReactDOM.render(<App />,
-document.getElementById("root"))
+<QuestionDetail questionText="When is the assignment due?" user="danny">
 ```
+
+A component that has data that changes over time is "stateful". React lets you do this with the `useState(initialValue)` hook - this allows you to define a piece of state with an initial value.
+
+Let's say you want to add an Upvote button to display a number of votes for a particular question.
+
+
+```jsx
+const QuestionDetail = props => {
+  const [numberOfUpvotes, setNumberOfUpvotes] = useState(0)
+
+  const onUpvoteClicked = () => {
+    setNumberOfUpvotes(numberOfUpvotes + 1)
+  }
+
+  return <div>
+    <div>
+      {props.questionText} - {props.user} - {numberOfUpvotes}
+    </div>
+    <button class="button" onClick={onUpvoteClicked}>Upvote this!</button>
+  </div>
+}
+
+<QuestionDetail questionText="When is the assignment due?" user="danny">
+```
+
+In this example, we have a QuestionDetail component that displays a question, the user who asked it, and the number of upvotes that the question has. We are using the `useState` hook to keep track of the number of upvotes.
+
+Let's break down this statement to understand what's happening:
+
+```js
+const [numberOfUpvotes, setNumberOfUpvotes] = useState(0)
+```
+
+* `useState(initialValue)` the first parameter is the initial value of this state, in this case, 0.
+* `useState` returns an array containing 2 values
+* `numberOfUpvotes` represents the latest value of that data (remember this will change over time).
+* `setNumberOfUpvotes` represents a setter function that you can call to update that data AND tell React to re-render this component now that the data has been updated.
+
+Here is a more verbose way of writing exactly the same statement if you find yourself confused by the syntax:
+
+```js
+const stateProperties = useState(0)
+const numberOfUpvotes = stateProperties[0] // the latest value of this state will always be the 0th index
+const setNumberOfUpvotes = stateProperties[1] // the function to update the state will always be the 1st index
+```
+Although its much easier to write it using the shorthand. The convention is to use the same name for the value and for the `set*` function - so if you had a state to represent the current year or month, you could write `const [year, setYear] = useState(2000)` or `const [currentMonth, setCurrentMonth] = useState("October")`
