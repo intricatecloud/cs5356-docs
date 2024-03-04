@@ -5,7 +5,7 @@ For this exercise, we'll re-do the exercise from [1. Static Websites/JS Practice
 
 So for this exercise, try that using React.
 
-1. Use this [Codepen template](https://codepen.io/pen?template=zYJJMOW), or the snippets below if you want to do it in an editor.
+1. Use this [Codepen template](https://codepen.io/pen?template=QWPbgmX), or the snippets below if you want to do it in an editor.
 2. Using the [React cheat sheet](./../../resources/react-cheat-sheet) + some googling, implement the prompts
 
 ## Instructions
