@@ -86,7 +86,7 @@ Now, for a more real use case - getting data from an external source, and then d
 
 For this exercise, you'll use the `fetch()` API (using Promises) to request data from NYC's Open Data. You'll then read the data and parse it as JSON.
 
-1. Use this [Codepen template](https://codepen.io/pen?template=vYzzQXB), or copy the snippet below
+1. Use this [Codepen template](https://codepen.io/pen?template=jORbxpq), or copy the snippet below
 2. Using the [React cheat sheet](./../../resources/react-cheat-sheet) + some googling, implement the prompts
 
 
@@ -98,7 +98,7 @@ For this exercise, you'll use the `fetch()` API (using Promises) to request data
 </head>
 
 <body>
-  <div id="root" class="mt-2 columns">
+  <div id="root" class="section">
   </div>
 </body>
 

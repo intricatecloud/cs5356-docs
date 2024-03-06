@@ -43,18 +43,27 @@ We were reviewing a snippet of React code below:
 ```jsx
 const ProductElement = (props) => {
   return (
-    <div class="column">
-      <figure class="image pr-5" style="width: 128px; height: 128px;">
-        <img style="height: 100%; object-fit: cover" src={props.product.imageUrl}>
-      </figure>
-      <div class="title">{props.product.name}</div>
-      <div class="subtitle">{props.product.description}</div>
+    <div class="columns is-gapless">
+      <div class="column is-1">
+        <figure class="image pr-5 is-128x128">
+          <img src={props.product.imageUrl} />
+        </figure>
+      </div>
+      <div class="column is-2">
+        <div class="title">{props.product.name}</div>
+        <div class="subtitle">{props.product.description}</div>
+      </div>
     </div>
-    ...
   )
 }
-...
-<ProductElement product={product}>
+
+const product = {
+  name: 'Shampoo',
+  description: 'A good one',
+  imageUrl: 'https://dummyimage.com/128x128/000/fff',
+}
+
+ReactDOM.render(<ProductElement product={product} />, document.getElementById("root"))
 ```
 
 Here's what this component might look like with some test data:
