@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Exercises: Displaying things with React
 
 ## Exercise 1
