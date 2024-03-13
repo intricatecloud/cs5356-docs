@@ -12,67 +12,9 @@ Let's follow the same set of steps to put together the data model for our Milest
 
 User stories to keep in mind:
 
-* As a student, I can ask a question (with my name or anonymously) for a particular class
-* As a student, I can view questions being asked for a particular class session
-* As a student, I can upvote or downvote a question
-* As an instructor, I can view questions (and upvotes) that students are asking for a particular class session
-* As an instructor, I can view who asked a particular question
-* As an instructor, I can view my classes & class sessions
-* As an instructor, I can create a class session
-
-
-<details>
-<summary>
-View the results from class
-</summary>
-<p>1. Identify the Domain Objects</p>
-
-<p>Student Questions, Classes, and Class Sessions</p>
-<p>2. Outline the data you may need</p>
-
-```mermaid
-classDiagram
-  direction LR
-  class Class {
-    +string name
-    +string id
-  }
-  class ClassSession {
-    +string id
-    +array questions
-    +string classId
-  }
-  class Questions {
-    +string id
-    +string question
-    +number votes
-  }
-  ClassSession --|> Questions
-```
-
-<p>3. Structure the data as JSON </p>
-<p>
-
-```json
-{
-  "classes": [{
-    "name": "cs5356"
-  }],
-  "classSessions": [{
-    "classId": "cs5356",
-    "questions": [{
-      "name": "danny",
-      "question": "why is the sky blue?",
-      "votes": 0
-    }]
-  }]
-}
-```
-
-</p>
-
-<p>4. Define the relationships</p>
-
-Class Sessions have a pointer named `classId` to the class that it belongs to.
-
-</details>
+- As an instructor, I can create a class code
+- As an instructor, I can view a table of class codes I've created and the date they were created.
+- As an instructor, I can view questions that students are asking for a particular class code
+- As an instructor, I can remove questions from the list after I've answered them
+- As a student, I can ask a question (with my name or anonymously) for a particular class code
+- As a student, I can view questions being asked for a particular class code
