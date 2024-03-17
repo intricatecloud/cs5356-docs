@@ -88,4 +88,6 @@ Your Canvas submission will contain the final breakdown of any point-deductions.
 
 ## Troubleshooting
 
-Things won't always go according to plan, so chime into the class slack channel to get help, or email a TA (contact info will be in the Syllabus on Canvas).
+Things won't always go according to plan, so there's a way for you to raise questions.
+
+#2024-cs5356-gh-classroom - use this channel to troubleshoot and ask your question about why some of your automated tests are failing. While some of us may be around on Slack coincidentally, you shouldn't expect real-time assistance, but we'll try to get to you as soon as we could.
