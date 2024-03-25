@@ -1,5 +1,6 @@
 ---
 sidebar_position: 9
+sidebar_class_name: hidden
 ---
 
 # Developing your API
@@ -15,7 +16,18 @@ For each API route, I'll include some code for how to read the response using `f
 
 ## Create a User
 
-```js title="app.js"
+```js title="pages/api/user.js"
+export default async function handler(req, res) {
+  const session = await getServerSession(req, res)
+
+  if (req.method === 'POST') {
+    // Handle GET request
+    
+  } else if (req.method === 'POST') {
+  }
+}
+
+
 app.post('/user', (request, response) => {
   const name = request.body.name
 
