@@ -7,6 +7,8 @@ sidebar_class_name: hidden
 
 In this section, we'll cover how you can create the API routes to support our example chatroom application. We'll create our API routes that we defined in the [earlier page](./define-rest-api)
 
+All the code used here is pulled from the NextJS docs on [API routes using the Pages router](https://nextjs.org/docs/pages/building-your-application/routing/api-routes).
+
 For each API route, I'll include some code for how to read the response using `fetch()`.
 
 ## Notes
@@ -21,26 +23,20 @@ export default async function handler(req, res) {
   const session = await getServerSession(req, res)
 
   if (req.method === 'POST') {
-    // Handle GET request
-    
-  } else if (req.method === 'POST') {
+    // Handle POST request
+    const name = req.body.name
+    await db.createUser(name)
+    return res.status(201).json({name})
+  } else {
+    return res.status(501).json({ message: 'Not implemented yet' })
   }
 }
-
-
-app.post('/user', (request, response) => {
-  const name = request.body.name
-
-  db.createUser(name)
-
-  response.status(201).send(name)
-})
 ```
 
 Make a request
 
 ```js
-fetch('/user', {
+fetch('/api/user', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -54,19 +50,24 @@ fetch('/user', {
 
 Note - this is copied from the previous section. Included for completeness.
 
-```js title="app.js"
-app.post('/chatroom', (request, response) => {
-  const name = request.body.name
+```js title="pages/api/chatroom/index.js"
+export default async function handler(req, res) {
+  const session = await getServerSession(req, res)
 
-  db.createChatroom(name)
-
-  response.status(201).send(name)
-})
+  if (req.method === 'POST') {
+    // Handle POST request
+    const name = req.body.name
+    await db.createChatroom(name)
+    return res.status(201).json({name})
+  } else {
+    return res.status(501).json({ message: 'Not implemented yet' })
+  }
+}
 ```
 Make the request
 
 ```js
-fetch('/chatroom', {
+fetch('/api/chatroom', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -79,7 +80,18 @@ fetch('/chatroom', {
 
 ## Join a Chatroom
 
-```js title="app.js"
+```js title="pages/api/chatroom/[name].js"
+export default async function handler(req, res) {
+  const session = await getServerSession(req, res)
+
+  if (req.method === 'PUT') {
+    const name = req.body.name
+    await db.createUser(name)
+    return res.status(201).json({name})
+  } else {
+    return res.status(501).json({ message: 'Not implemented yet' })
+  }
+}
 // highlight-next-line
 app.put('/chatroom/:name', (request, response) => {
   // highlight-next-line

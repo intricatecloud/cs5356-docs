@@ -12,88 +12,200 @@ Rather than implementing a system for storing usernames & passwords, all of the 
 
 Firebase lets you have upto 50k monthly users [for FREE](https://firebase.google.com/pricing). The only thing they charge you for is authentication [via Phone Number](https://firebase.google.com/docs/auth/web/phone-auth)
 
-
 ## Get Started
 
 Follow this guide for adding Firebase Auth with a pre-built UI for your application.
 
-For the purpose of this guide, you can use a new create-react-app to get login with Firebase working.
+For the purpose of this guide, you can use a new create-next-app to get login with Firebase working.
 
-## Create React App
+## Create a new NextJS app
 
-Run `npx create-react-app firebase-auth` to create a new React app for this exercise.
+Run `npx create-next-app nextjs-firebase` to create a new NextJS app for this exercise.
 
-There's a few edits we have to make to get this working correctly with Firebase.
-
-### Downgrade React
-
-The pre-built Firebase UI isn't compatible yet with React 18 (the latest), so we need to downgrade to React 17.0.2 - make the edits below and re-run `npm install`
-
-```json title=package.json
-"dependencies": {
-  // highlight-next-line
-  // delete the @testing-library packages
-  // highlight-next-line
-  "react": "^16.14.0",
-  // highlight-next-line
-  "react-dom": "^16.14.0",
-  // highlight-next-line
-  "react-scripts": "^4.0.3",
-  // highlight-next-line
-  "react-error-overlay": "^6.0.9",
-  "web-vitals": "^2.1.4"
-}
-```
-
-### Update index.js
-
-The last step is to make sure we're calling the right API from index.js
-
-```js title="src/index.js"
-import React from 'react';
-// highlight-next-line
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
-// highlight-next-line
-ReactDOM.render(<App />, document.getElementById('root'));
-
-```
-* Rename the `react-dom/client` import, to `react-dom`
-* Use `ReactDOM.render` instead of `ReactDOM.createRoot`
-
-:::info
-
-Milestone 2 was built using create-react-app so everything you do here would apply to your Milestone 3 project, if you decide to use Milestone 2 as your base.
-
-The only difference is that your Milestone 2 uses a backend via create-react-app's `proxy` property. [See more here](./../unit-2/frontend/developing-the-frontend.mdx#proxy-api)
-
-:::
+There's a few more edits we have to make to get this working correctly with Firebase.
 
 ## Setup Firebase
 
-Run `npm install --save react-firebaseui firebase`
+### 1. Set up your Firebase Account on the console
 
-The package we'll be using for this is called `react-firebaseui` from https://www.npmjs.com/package/react-firebaseui
+* Navigate to Firebase Authentication and click Get Started
+* Select Email/Password as a Sign-in Method. 
 
-### Update the App component
+:::caution
+If you have errors during sign in, double check that you have ENABLED Email/Password as a sign in method
+:::
+
+### 2. Create a Firebase Web Client
+
+* Navigate to the dashboard in your Firebase Console, and select Add App
+* Give your app a name, and then copy the config that it shows you.
+
+### 3. Configure Firebaseui
+
+Run `npm install --save firebaseui`
+
+The package we'll be using for this is called `firebaseui` from https://www.npmjs.com/package/firebaseui. This comes with a fully implemented sign-up/sign-in flow linked to Firebase Authentication that we can use.
+
+**Add a StyledFirebaseAuth component**
+
+Add a file called `src/components/StyledFirebaseAuth.js` and copy/paste the contents below. It is ok to copy/paste this component for your assignment.
+
+```js
+import { useEffect, useRef, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import 'firebaseui/dist/firebaseui.css';
+
+const StyledFirebaseAuth = ({uiConfig, firebaseAuth, className, uiCallback}) => {
+    const [firebaseui, setFirebaseui] = useState(null);
+    const elementRef = useRef(null);
+
+    useEffect(() => {
+        // Firebase UI only works on the Client. So we're loading the package only after
+        // the component has mounted, so that this works when doing server-side rendering.
+        setFirebaseui(require('firebaseui'));
+    }, []);
+
+
+    useEffect(() => {
+        if (firebaseui === null )
+            return;
+
+        // Get or Create a firebaseUI instance.
+        const firebaseUiWidget = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebaseAuth);
+        if (uiConfig.signInFlow === 'popup')
+            firebaseUiWidget.reset();
+
+        // We track the auth state to reset firebaseUi if the user signs out.
+        const unregisterAuthObserver = onAuthStateChanged(firebaseAuth, user => {
+            if (!user) {
+                firebaseUiWidget.reset();
+            }
+        });
+
+        // Trigger the callback if any was set.
+        if (uiCallback) {
+            uiCallback(firebaseUiWidget);
+        }
+
+        // Render the firebaseUi Widget.
+        // @ts-ignore
+        firebaseUiWidget.start(elementRef.current, uiConfig);
+
+        return () => {
+            unregisterAuthObserver();
+            firebaseUiWidget.reset();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [firebaseui, uiConfig]);
+
+    return <div className={className} ref={elementRef} />;
+};
+
+export default StyledFirebaseAuth;
+```
+
+This component will be our Login component, everything we need for sign in is there. Now, hook it into the rest of your app.
+
+**Create a Login page**
+
+Add a page - `src/pages/login.js`. This page will ONLY include the `StyledFirebaseAuth` component along with the configuration
+
+```js title=src/pages/login.js
+// Import the functions you need from the SDKs you need
+import { initializeApp, getApps } from "firebase/app";
+import { getAuth } from 'firebase/auth'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import StyledFirebaseAuth from './../components/StyledFirebaseAuth'
+
+// Define the Firebase App instance
+let firebaseApp
+if (!getApps().length) {
+    firebaseApp = initializeApp(config);
+} else {
+    firebaseApp = getApps()[0];
+}
+
+// Configure FirebaseUI.
+const uiConfig = {
+    // Popup signin flow rather than redirect flow.
+    signInFlow: 'popup',
+    signInSuccessUrl: '/',
+    // We will display Google and Facebook as auth providers.
+    signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+    ],
+};
+
+export default function LoginPage() {
+    return <div>
+        <StyledFirebaseAuth 
+          uiConfig={uiConfig} 
+          firebaseAuth={getAuth(firebaseApp)} 
+          uiCallback={() => console.log('Logged in!')} 
+        />
+    </div>
+}
+```
+
+At this point, if you navigate to `localhost:3000/login`, you should be able to see some styled login buttons but signing in will not completely work yet.
+
+**Update _app.js to include Firebase Auth**
+
+We also need to tell our NextJS application about the currently signed in user. We can manage this at the top-most level of our app - `src/_app.js`.
 
 Import the following components at the top of your App.js
 
 ```js title="src/App.js"
-// This uses the pre-built login form
-import { StyledFirebaseAuth } from 'react-firebaseui';
-// This imports firebase using the Firebase SDK v8 style
-import firebase from 'firebase/compat/app'
-// This imports the Firebase Auth libraries
-import 'firebase/compat/auth'
+import { useState, useEffect} from 'react'
+import { onAuthStateChanged, getAuth } from 'firebase/auth'
+import { initializeApp, getApps } from "firebase/app";
+import 'firebase/compat/auth';
+import "@/styles/globals.css";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAb0xrlnDii9h31FhwMM6wsT0whWIfsKUc",
+  authDomain: "cs5356-in-class.firebaseapp.com",
+  projectId: "cs5356-in-class",
+  storageBucket: "cs5356-in-class.appspot.com",
+  messagingSenderId: "284178678795",
+  appId: "1:284178678795:web:4e5f776596f7ddb3b2730e"
+};
+
+// Initialize Firebase
+let firebaseApp
+if (!getApps().length) {     
+    firebaseApp = initializeApp(firebaseConfig); 
+} else {     
+    firebaseApp = getApps()[0]; 
+}
+
+export default function App({ Component, pageProps }) {
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    // We track the auth state to reset firebaseUi if the user signs out.
+    return onAuthStateChanged(getAuth(firebaseApp), user => {
+      if (!user) {
+          firebaseUiWidget.reset();
+      }
+      setUser(user)
+    });
+  }, [])
+
+  return <Component user={user} {...pageProps} />;
+}
 ```
+
+* `firebaseConfig` contains a bunch of keys and IDs that we grabbed from Firebase. It is OK for these to be available to your frontend. There are some security risks that come with it but Firebase is designed to be used safely on the frontend.
+* We add a `useEffect` block here, along with `onAuthStateChanged` so we can listen for sign-in changes at the application level, and once we detect a user, we can pass that along to our app as a prop.
 
 :::info
 
-Firebase made updates to their v9 SDK which changes the way you call their functions. You may see scattered documentation online that uses one style vs another.
+Firebase made updates to their v9 SDK which changes the way you call their functions. You may see scattered documentation online that uses one style vs another. Prefer to use the V9 syntax below (although there are some instances where we may want the V8 syntax).
 
 V9 looks like:
 ```js
@@ -111,98 +223,9 @@ The code we're using for this guide is their v8 SDK. See the [Firebase SDK Refer
 
 :::
 
-To see more of the Firebase docs around Auth, look at their [Web > Get Started page](https://firebase.google.com/docs/auth/web/start#web-version-9_3). Make sure to refer to the `Web version 8 (namespaced)` code examples.
+To see more of the Firebase docs around Auth, look at their [Web > Get Started page](https://firebase.google.com/docs/auth/web/start#web-version-9_3).
 
-![Where to find v8 code examples](auth-docs.png)
-
-### Get your Firebase Details
-
-1. You should have a Firebase project available to use - use either your M1 or M2 project.
-2. Get your projects configuration by going to your Project Overview page, and clicking on Settings > Project Settings.
-3. You can create a new Web App if it says you don't have an app yet.
-4. Grab the sample config snippet to include in your app, it should look something like this
-
-```js
-// Configure Firebase.
-const config = {
-  apiKey: 'zzzzz',
-  authDomain: 'zzzzz',
-  // ...
-};
-firebase.initializeApp(config);
-```
-5. Paste this above your App component.
-
-```js
-// Configure Firebase.
-const config = {
-  apiKey: 'zzzzz',
-  authDomain: 'zzzzz',
-  // ...
-};
-firebase.initializeApp(config);
-
-function App() {
-  return (
-    <div className="App">
-    ...
-```
-## Add Firebase UI
-
-1. Add your Firebase UI config - this tells react-firebaseui what you want to display and how
-
-```js
-const uiConfig = {
-  signInFlow: 'popup',
-  signInOptions: [
-    firebase.auth.EmailAuthProvider.PROVIDER_ID
-  ],
-  callbacks: {
-    // Avoid redirects after sign-in.
-    signInSuccessWithAuthResult: () => false,
-  },
-};
-```
-
-2. Add state to your app to keep track of signed-in status
-
-3. Add an `onAuthStateChanged` observer when the component loads for the first time via a `useEffect` hook
-
-```js
-function App() {
-  // State to keep track of signed-in state
-  // highlight-next-line
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  ...
-  useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-      // this gets called whenever a user signs in or out
-      setIsSignedIn(!!user);
-    });
-    return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
-  }, []);
-
-```
-4. Add the `StyledFirebaseAuth` component
-
-```jsx
-if (!isSignedIn) {
-  return (
-    <div>
-      <h1>My App</h1>
-      <p>Please sign-in:</p>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-    </div>
-  );
-}
-return (
-  <div>
-    <h1>My App</h1>
-    <p>Welcome - You are now signed-in - {isSignedIn}!</p>
-  </div>
-);
-```
-
+Some things left for you to do:
 * Display the user's name & email address
 * Add a button to sign the user out
 
@@ -211,7 +234,3 @@ Hint: See the [Firebase SDK Reference](https://firebase.google.com/docs/referenc
 ### Login
 
 You can now login. This pre-built form lets you register as a new user or sign in as an existing user. And you can see the info of everyone who logs in via your Firebase dashboard
-
-### For Milestone 3
-
-* How might you tweak your Milestone 2 App.js to work with Firebase Auth instead of?

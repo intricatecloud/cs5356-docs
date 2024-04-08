@@ -10,7 +10,7 @@ Forms refer to the `<form>` element, and the patterns for moving the data around
 
 The pattern is:
 * Create a Form element
-* Add some input elements based on the data you want to provide
+* Add some input elements b ased on the data you want to provide
 * Add a submit button
 * When the submit button is clicked, do something with the form values
 
