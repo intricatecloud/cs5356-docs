@@ -106,30 +106,53 @@ export default StyledFirebaseAuth;
 
 This component will be our Login component, everything we need for sign in is there. Now, hook it into the rest of your app.
 
+**Create a firebase.js file to hold your Firebase App**
+
+Create `src/firebase.js` and this will hold your Firebase configuration & a Firebase App instance (so you can use the rest of the Firebase suite).
+
+```js title=src/firebase.js
+// Import the functions you need from the SDKs you need
+import { initializeApp, getApps } from "firebase/app";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "replaceme",
+    authDomain: "replaceme",
+    projectId: "replaceme",
+    storageBucket: "replaceme",
+    messagingSenderId: "replaceme",
+    appId: "replaceme"
+};
+
+let firebaseApp
+if (!getApps().length) {
+    firebaseApp = initializeApp(firebaseConfig);
+} else {
+    firebaseApp = getApps()[0];
+}
+
+export default firebaseApp;
+```
+
+* `firebaseConfig` contains a bunch of keys and IDs that we grabbed from Firebase. It is OK for these to be available to your frontend. There are some security risks that come with it but Firebase is designed to be used safely on the frontend.
+
+
 **Create a Login page**
 
 Add a page - `src/pages/login.js`. This page will ONLY include the `StyledFirebaseAuth` component along with the configuration
 
 ```js title=src/pages/login.js
-// Import the functions you need from the SDKs you need
-import { initializeApp, getApps } from "firebase/app";
+import firebaseApp from './firebase';
+import StyledFirebaseAuth from './../components/StyledFirebaseAuth'
 import { getAuth } from 'firebase/auth'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import StyledFirebaseAuth from './../components/StyledFirebaseAuth'
-
-// Define the Firebase App instance
-let firebaseApp
-if (!getApps().length) {
-    firebaseApp = initializeApp(config);
-} else {
-    firebaseApp = getApps()[0];
-}
 
 // Configure FirebaseUI.
 const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: 'popup',
+    // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
     signInSuccessUrl: '/',
     // We will display Google and Facebook as auth providers.
     signInOptions: [
@@ -141,11 +164,7 @@ const uiConfig = {
 
 export default function LoginPage() {
     return <div>
-        <StyledFirebaseAuth 
-          uiConfig={uiConfig} 
-          firebaseAuth={getAuth(firebaseApp)} 
-          uiCallback={() => console.log('Logged in!')} 
-        />
+        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={getAuth(firebaseApp)} uiCallback={() => console.log('Logged in!')} />
     </div>
 }
 ```
@@ -161,27 +180,8 @@ Import the following components at the top of your App.js
 ```js title="src/App.js"
 import { useState, useEffect} from 'react'
 import { onAuthStateChanged, getAuth } from 'firebase/auth'
-import { initializeApp, getApps } from "firebase/app";
-import 'firebase/compat/auth';
+import firebaseApp from '../firebase'
 import "@/styles/globals.css";
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAb0xrlnDii9h31FhwMM6wsT0whWIfsKUc",
-  authDomain: "cs5356-in-class.firebaseapp.com",
-  projectId: "cs5356-in-class",
-  storageBucket: "cs5356-in-class.appspot.com",
-  messagingSenderId: "284178678795",
-  appId: "1:284178678795:web:4e5f776596f7ddb3b2730e"
-};
-
-// Initialize Firebase
-let firebaseApp
-if (!getApps().length) {     
-    firebaseApp = initializeApp(firebaseConfig); 
-} else {     
-    firebaseApp = getApps()[0]; 
-}
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null)
@@ -200,7 +200,6 @@ export default function App({ Component, pageProps }) {
 }
 ```
 
-* `firebaseConfig` contains a bunch of keys and IDs that we grabbed from Firebase. It is OK for these to be available to your frontend. There are some security risks that come with it but Firebase is designed to be used safely on the frontend.
 * We add a `useEffect` block here, along with `onAuthStateChanged` so we can listen for sign-in changes at the application level, and once we detect a user, we can pass that along to our app as a prop.
 
 :::info
@@ -219,8 +218,7 @@ import firebase from 'firebase/compat/app'
 firebase.initializeApp(config)
 ```
 
-The code we're using for this guide is their v8 SDK. See the [Firebase SDK Reference here](https://firebase.google.com/docs/reference/js/v8)
-
+The code we're using for this guide is their v9 SDK.
 :::
 
 To see more of the Firebase docs around Auth, look at their [Web > Get Started page](https://firebase.google.com/docs/auth/web/start#web-version-9_3).
@@ -229,7 +227,7 @@ Some things left for you to do:
 * Display the user's name & email address
 * Add a button to sign the user out
 
-Hint: See the [Firebase SDK Reference](https://firebase.google.com/docs/reference/js/v8/firebase.auth) to see everything you can do with the firebase.auth() object
+Hint: See the [Firebase SDK Reference](https://firebase.google.com/docs/reference/js/auth.auth.md#auth_interface) to see everything you can do with the Auth object from `getAuth(firebaseApp)`
 
 ### Login
 
