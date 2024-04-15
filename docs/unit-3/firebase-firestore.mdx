@@ -1,7 +1,6 @@
 ---
 sidebar_position: 3
 title: Getting Started with Firestore
-sidebar_class_name: hidden
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -10,7 +9,6 @@ import TabItem from '@theme/TabItem';
 
 - Setup Firestore, and learn to read/write data from firestore.
 - Analyze how many reads and writes are performed to calculate pricing
-- Set up the emulator to prevent run-away reads and writes while learning
 
 ## Getting Setup
 
@@ -26,25 +24,28 @@ import TabItem from '@theme/TabItem';
     - You could get a faster connection to Firestore if its location is closer to your users
     - You may have legal/compliance reasons to keep data within a certain country
 
-### Visit the CodeSandbox
+### Configure your project
 
-I’m trying out CodeSandbox as a way of sharing out React apps without having to worry about your local environment.
+In the previous section, we configured our project to use Firebase Auth so that we could do login and logout.
 
-Visit the [react-firebaseui-template in CodeSandbox](https://codesandbox.io/s/react-firebaseui-template-ggrd34)
+In this section, we'll add integration with Firestore as our database. In order to demo the Firestore functionality, we'll create a simple web page to read/write some data.
 
-This template contains a minimal example with working versions of react & firebase. All the normal VSCode shortcuts work within CodeSandbox.
+I've put an example repo on CodeSandbox - similar to Codepen.io but meant for NextJS (and other similar) projects.
 
-`App.js` contains all the code, pretty much straight from the [README for the project here](https://github.com/firebase/firebaseui-web-react#using-styledfirebaseauth-with-local-state)
+[CodeSandbox Link](https://codesandbox.io/p/devbox/cs5356-firestore-demo-2wfw92?layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522clv1cmdrw00073b6g9wmknf46%2522%252C%2522sizes%2522%253A%255B59.45362134688691%252C40.54637865311309%255D%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522EDITOR%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522id%2522%253A%2522clv1cmdrw00023b6geheeee0q%2522%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522SHELLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522id%2522%253A%2522clv1cmdrw00043b6gpkl0xmr1%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522DEVTOOLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522id%2522%253A%2522clv1cmdrw00063b6gkbcmoqvs%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%252C%2522sizes%2522%253A%255B50%252C50%255D%257D%252C%2522tabbedPanels%2522%253A%257B%2522clv1cmdrw00023b6geheeee0q%2522%253A%257B%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clv1cmdrw00013b6gx46lp2od%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522FILE%2522%252C%2522filepath%2522%253A%2522%252FREADME.md%2522%252C%2522state%2522%253A%2522IDLE%2522%257D%255D%252C%2522id%2522%253A%2522clv1cmdrw00023b6geheeee0q%2522%252C%2522activeTabId%2522%253A%2522clv1cmdrw00013b6gx46lp2od%2522%257D%252C%2522clv1cmdrw00063b6gkbcmoqvs%2522%253A%257B%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clv1cmdrw00053b6gp72dmlnw%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522TASK_PORT%2522%252C%2522taskId%2522%253A%2522dev%2522%252C%2522port%2522%253A3000%252C%2522path%2522%253A%2522%252F%2522%257D%255D%252C%2522id%2522%253A%2522clv1cmdrw00063b6gkbcmoqvs%2522%252C%2522activeTabId%2522%253A%2522clv1cmdrw00053b6gp72dmlnw%2522%257D%252C%2522clv1cmdrw00043b6gpkl0xmr1%2522%253A%257B%2522id%2522%253A%2522clv1cmdrw00043b6gpkl0xmr1%2522%252C%2522activeTabId%2522%253A%2522clv1cmdrw00033b6gyjuuf5jm%2522%252C%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clv1cmdrw00033b6gyjuuf5jm%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522TASK_LOG%2522%252C%2522taskId%2522%253A%2522dev%2522%257D%252C%257B%2522id%2522%253A%2522clv1cswmf00h53b6gx75xm419%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522TERMINAL%2522%252C%2522shellId%2522%253A%2522clv1cswp8002tdjge962o2zlu%2522%257D%255D%257D%257D%252C%2522showDevtools%2522%253Atrue%252C%2522showShells%2522%253Atrue%252C%2522showSidebar%2522%253Atrue%252C%2522sidebarPanelSize%2522%253A15%257D)
 
-`PostsList.js` contains the React component for the Post widget we’ve been doing a few times in class.
+Some important files:
+* `src/index.js` is a hello world NextJS project with the landing page content removed.
 
-`database.js` is a file containing the methods you need to implement to make `PostsList.js` work correctly.
+`src/components/PostsList.js` contains the React component for a Post widget - a way for us to create/read/update some data from Firestore.
+
+`src/database.js` is a file containing the methods you need to implement to make `PostsList.js` work correctly - very similar to the way 
 
 For this exercise, you’ll be editing `database.js` and using the app to make sure things are working.
 
 ### Get your Firebase Config Information
 
-After you initialize Firestore, grab your Firebase Config object and paste it into `database.js`
+After you initialize Firestore, grab your Firebase Config object and paste it into `src/firebase.js`
 
 It looks like this:
 
@@ -68,10 +69,6 @@ If you don’t have this yet, you’ll need to “Create a new web app” on Fir
 Go to `database.js` and read through the TO-DOs. Note - all the exercises are based on making edits in that file. If you wind up using different names for your properties, they also need to be updated in `App.js`
 
 The purpose of the exercise is to get you familiar with the API for reading and writing data to Firestore, along with some of its limitations as well.
-
-When you’re looking at the docs for some of the APIs below, make sure you’re looking at the `Web version 8` docs
-
-![v8 docs option](./firebase-v8-docs.png)
 
 ### Using Promises with Firestore
 
