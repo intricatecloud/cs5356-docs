@@ -1,0 +1,85 @@
+---
+sidebar_position: 5
+title: Deploying NextJS to Firebase
+---
+
+You can take your NextJS application and deploy it to Firebase IF you are not making use of any of the `pages/api` routes or features.
+
+If your application uses Firebase Authentication & Firestore as its database, this is a perfectly valid and easy way to deploy an application for free.
+
+If you are making use of other NextJS features and not planning on using Firebase, then deploying with Vercel is an easy and free option for low traffic websites.
+
+## Update your next.config.mjs
+
+Since we're not making use of the `pages/api` routes, we can tell NextJS to produce a "static" build - meaning you can create a set of static files (HTML, CSS, and Javascript) that you can deploy (almost) anywhere - Firebase Hosting, Vercel, Netlify, etc.
+
+Update your next.config.mjs to tell it you want an "export".
+
+```js title=next.config.mjs
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  // highlight-next-line
+  output: 'export',
+  // highlight-next-line
+  images: {
+    // highlight-next-line
+    unoptimized: true
+    // highlight-next-line
+  }
+};
+
+export default nextConfig;
+```
+
+By default, NextJS includes an image optimization package that optimizes your images for the web without you doing anything. This feature works by default in Vercel, but not if you deploy to Firebase Hosting. We have to disable that feature in order to create our static export.
+
+Then run `npm run build` to build the application and create an export. The output of the build process will be available in the `out/` folder.
+
+### Update your firebase.json
+
+Once you've created an "export" of your application, you have to tell Firebase to deploy the files in the `out/` directory.
+
+Run `npx firebase init hosting` to initialize hosting and have it create the `firebase.json` & `.firebaserc` files.
+
+Edit `firebase.json` to look like the file below
+
+```json title=firebase.json
+{
+  "hosting": {
+    // highlight-next-line
+    "public": "out",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    // highlight-next-line
+    "rewrites": [
+        // highlight-next-line
+      {
+        // highlight-next-line
+        "source": "**",
+        // highlight-next-line
+        "destination": "/$&.html"
+        // highlight-next-line
+      }
+      // highlight-next-line
+    ],
+    // highlight-next-line
+    "cleanUrls": true
+  }
+}
+```
+
+* This tells Firebase that the `public` directory should be set to `out/`. The public directory refers to the directory that includes your static HTML, CSS, and JS files.
+* This also adds a block of `rewrite` rules - mainly to tell NextJS that any page requested should return the corresponding HTML file
+* The last option `cleanUrls` tells NextJS to avoid using `.html` extension in the URL.
+
+## Deploy
+
+Once you've got your next.config.mjs & firebase.json updated, you've got an application ready to go.
+
+Run `npx firebase deploy` to deploy your application to your Firebase Project.
+
+Visit the URL that appears in the terminal, and you'll have an app ready to use!

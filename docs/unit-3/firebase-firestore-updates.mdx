@@ -1,0 +1,35 @@
+---
+sidebar_position: 4
+title: Firestore with Real-Time Updates
+---
+
+If you'd like to incorporate some real-time functionality into your application - where you want to update the interface in real-time without having the user refresh the page or click a button, you can use the real-time features from Firestore.
+
+## Listen for Changes in a Collection
+
+Find the component that is making the queries to Firebase, and add the snippets below to that component
+
+```jsx
+import { query, onSnapshot, collection } from "firebase/firestore";
+
+// Subscribe to updates once when a component loads
+useEffect(() => {
+  const q = query(collection(db, 'posts'))
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const results = [];
+    querySnapshot.forEach((doc) => {
+        results.push({
+          id: doc.id,
+          ...doc.data()
+        });
+    });
+    // update the state whenever a new snapshot
+    // is available
+    setResults(results)
+  });
+}, [])
+```
+
+* We can listen for changes to a collection by subscribing to a snapshot for a particular query
+* When the collection is updated, the `onSnapshot` callback will be called with the latest results of the query
+* Then the local state is updated with the latest results causing React to re-render the component with the latest info

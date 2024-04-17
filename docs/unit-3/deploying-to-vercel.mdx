@@ -1,0 +1,36 @@
+---
+sidebar_position: 6
+title: Deploying NextJS to Vercel
+---
+
+If you are making use of other NextJS features and/or you are not using other parts of the Firebase Suite - then you can deploy your application to Vercel.
+
+__1. Create a Github Repo for your project__
+
+Before moving on, you'll want to make sure you have a Github repository with your NextJS project in it. Create a new Github Repository on `https://github.com` and then follow the steps to use it with an existing repository.
+
+__2. Commit and push your changes__
+
+Once you've got a Github repo, you can do the following:
+
+```
+git init
+git add .
+git commit -m "Add ctech nextjs project to repo"
+git remote add origin git@github.com:your-github-username/your-repo-name.git
+git push -u origin main
+```
+
+This will push all of your code that you currently have into the Github repository.
+
+__3. Deploy to Vercel__
+
+If you don't yet have an account with Vercel, go ahead to [https://vercel.com](https://vercel.com) and click Sign Up. Sign Up with your Github account - this makes it easy to connect it to our Github Repository and anytime you push your code to GitHub, it will automatically deploy the latest code to your website.
+
+* Once you click Sign Up, you can select "Hobby" Project, and provide a username and password.
+* Once you're able to log in, click Create New Project
+* Then select Import Git Repository
+* The website will walk you through a few steps to link your account, and then Import the repository you created.
+* Click Finish
+
+After a few minutes you'll see your code appearing with a new public URL. You can review the functionality of your application, and you should see your application working.
